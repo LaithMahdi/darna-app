@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/onboarding_buttons.dart';
 import '../widgets/onboarding_dot_indicator.dart';
 import '../widgets/onboarding_page_view.dart';
 
-class OnboardingView extends StatelessWidget {
+class OnboardingView extends ConsumerWidget {
   const OnboardingView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Stack(
         children: [
