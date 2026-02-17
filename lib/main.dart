@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/config.dart';
 import 'core/constants/app_theme.dart';
+import 'core/locator/setup_service_locator.dart';
 import 'routes/routes.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupServiceLocator();
   runApp(const ProviderScope(child: MyApp()));
 }
 

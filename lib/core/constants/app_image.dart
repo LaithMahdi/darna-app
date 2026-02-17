@@ -2,6 +2,10 @@
 class AppImage {
   AppImage._();
   
+  static const String imagesGoogle = "assets/images/google.png";
+
+  static const String imagesLogoLogo = "assets/images/logo/logo.png";
+
   static const String imagesLogoLogoWhite = "assets/images/logo/logo_white.svg";
 
   static const String imagesLogoLogoWritting = "assets/images/logo/logo_writting.svg";

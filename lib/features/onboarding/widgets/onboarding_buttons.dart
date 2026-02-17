@@ -34,6 +34,7 @@ class OnboardingButtons extends ConsumerWidget {
             icon: LucideIcons.arrowRight,
             onPressed: () {
               if (state.isLastPage) {
+                viewModel.completeOnboarding();
               } else {
                 viewModel.nextPage();
               }

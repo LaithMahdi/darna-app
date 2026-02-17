@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/helper/cacher_helper.dart';
 import '../data/onboarding_data.dart';
 import '../models/onboarding_model.dart';
 
@@ -65,6 +66,10 @@ class OnboardingViewModel extends StateNotifier<OnboardingState> {
 
   void skipToLast() {
     onPageChanged(state.pages.length - 1);
+  }
+
+  void completeOnboarding() {
+    CacherHelper().setOnboardingCompleted(true);
   }
 }
 
