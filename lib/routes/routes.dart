@@ -1,18 +1,29 @@
 import 'package:go_router/go_router.dart';
+import '../core/helper/cacher_helper.dart';
+import '../features/auth/views/login_view.dart';
 import '../features/onboarding/views/onboarding_view.dart';
 import '../features/splash/splash_view.dart';
 
 abstract class Routes {
   static const String splash = '/';
   static const String onboarding = '/onboarding';
+  static const String login = '/login';
 
   static final router = GoRouter(
+    initialLocation: splash,
     routes: [
       GoRoute(path: splash, builder: (context, state) => const SplashView()),
       GoRoute(
         path: onboarding,
         builder: (context, state) => const OnboardingView(),
+        redirect: (context, state) {
+          if (CacherHelper().isOnboardingCompleted()) {
+            return login;
+          }
+          return null;
+        },
       ),
+      GoRoute(path: login, builder: (context, state) => const LoginView()),
     ],
   );
 }

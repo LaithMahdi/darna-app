@@ -7,7 +7,6 @@ class CacherHelper {
 
   CacherHelper();
 
-  // Onboarding methods
   Future<void> setOnboardingCompleted(bool value) async {
     await _service.sharedPreferences.setBool(_isOnboardingCompletedKey, value);
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_color.dart';
+import '../../core/helper/cacher_helper.dart';
 import '../../routes/routes.dart';
 import 'widgets/splash_animated_builder.dart';
 
@@ -20,7 +21,7 @@ class _SplashViewState extends State<SplashView>
   void initState() {
     super.initState();
     initAnimation();
-    navigateToOnboarding();
+    navigateToNextScreen();
   }
 
   @override
@@ -32,17 +33,27 @@ class _SplashViewState extends State<SplashView>
   void initAnimation() {
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
-    _slidingAnimation = Tween<Offset>(begin: Offset(-4, 0), end: Offset.zero)
-        .chain(CurveTween(curve: FlippedCurve(Curves.easeInOut)))
-        .animate(_animationController);
+    _slidingAnimation =
+        Tween<Offset>(begin: const Offset(-4, 0), end: Offset.zero)
+            .chain(CurveTween(curve: FlippedCurve(Curves.easeInOut)))
+            .animate(_animationController);
     _animationController.forward();
   }
 
-  void navigateToOnboarding() {
-    Future.delayed(Duration(seconds: 2), () {
-      GoRouter.of(context).push(Routes.onboarding);
+  void navigateToNextScreen() {
+    Future.delayed(const Duration(seconds: 2), () {
+      final cacheHelper = CacherHelper();
+      final isOnboardingCompleted = cacheHelper.isOnboardingCompleted();
+
+      if (mounted) {
+        if (isOnboardingCompleted) {
+          context.go(Routes.login);
+        } else {
+          context.go(Routes.onboarding);
+        }
+      }
     });
   }
 

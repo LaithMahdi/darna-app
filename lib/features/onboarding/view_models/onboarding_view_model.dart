@@ -1,8 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/helper/cacher_helper.dart';
+import '../../../core/providers/cache_provider.dart';
+import '../../../routes/routes.dart';
 import '../data/onboarding_data.dart';
 import '../models/onboarding_model.dart';
 
+/// State class for Onboarding
 class OnboardingState {
   final int currentPage;
   final List<OnboardingModel> pages;
@@ -32,7 +37,9 @@ class OnboardingState {
 }
 
 class OnboardingViewModel extends StateNotifier<OnboardingState> {
-  OnboardingViewModel()
+  final CacherHelper _cacherHelper;
+
+  OnboardingViewModel(this._cacherHelper)
     : super(
         OnboardingState(
           currentPage: 0,
@@ -68,12 +75,16 @@ class OnboardingViewModel extends StateNotifier<OnboardingState> {
     onPageChanged(state.pages.length - 1);
   }
 
-  void completeOnboarding() {
-    CacherHelper().setOnboardingCompleted(true);
+  Future<void> completeOnboarding(BuildContext context) async {
+    await _cacherHelper.setOnboardingCompleted(true);
+    if (context.mounted) {
+      context.go(Routes.login);
+    }
   }
 }
 
 final onboardingViewModelProvider =
     StateNotifierProvider<OnboardingViewModel, OnboardingState>((ref) {
-      return OnboardingViewModel();
+      final cacherHelper = ref.watch(cacherHelperProvider);
+      return OnboardingViewModel(cacherHelper);
     });

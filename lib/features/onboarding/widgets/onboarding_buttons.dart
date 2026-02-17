@@ -18,7 +18,7 @@ class OnboardingButtons extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         state.isFirstPage
-            ? SizedBox()
+            ? const SizedBox()
             : SizedBox(
                 width: size,
                 height: size,
@@ -32,9 +32,9 @@ class OnboardingButtons extends ConsumerWidget {
           width: size,
           child: CustomFilledIconButton(
             icon: LucideIcons.arrowRight,
-            onPressed: () {
+            onPressed: () async {
               if (state.isLastPage) {
-                viewModel.completeOnboarding();
+                await viewModel.completeOnboarding(context);
               } else {
                 viewModel.nextPage();
               }
