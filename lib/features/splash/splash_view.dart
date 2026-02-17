@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/constants/app_color.dart';
+import '../../routes/routes.dart';
 import 'widgets/splash_animated_builder.dart';
 
 class SplashView extends StatefulWidget {
@@ -18,6 +20,7 @@ class _SplashViewState extends State<SplashView>
   void initState() {
     super.initState();
     initAnimation();
+    navigateToOnboarding();
   }
 
   @override
@@ -35,6 +38,12 @@ class _SplashViewState extends State<SplashView>
         .chain(CurveTween(curve: FlippedCurve(Curves.easeInOut)))
         .animate(_animationController);
     _animationController.forward();
+  }
+
+  void navigateToOnboarding() {
+    Future.delayed(Duration(seconds: 2), () {
+      GoRouter.of(context).push(Routes.onboarding);
+    });
   }
 
   @override
