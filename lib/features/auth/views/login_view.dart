@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/config.dart';
 import '../../../core/constants/app_image.dart';
+import '../../../routes/routes.dart';
 import '../../../shared/buttons/custom_text_icon_button.dart';
 import '../../../shared/logo.dart';
 import '../../../shared/spacer/spacer.dart';
@@ -40,9 +42,9 @@ class LoginView extends StatelessWidget {
           SliverFillRemaining(
             hasScrollBody: false,
             child: AuthTextButton(
-              label: "Don't have an account?",
+              label: "Don't have an account? ",
               subLabel: "Sign Up",
-              onPressed: () {},
+              onPressed: () => GoRouter.of(context).push(Routes.register),
             ),
           ),
         ],
