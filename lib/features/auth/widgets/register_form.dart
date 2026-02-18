@@ -5,6 +5,7 @@ import '../../../core/functions/valid_input.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/custom_dropdown.dart';
 import '../../../shared/forms/input.dart';
+import '../../../shared/forms/role_selector.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
@@ -30,6 +31,7 @@ class _RegisterFormState extends State<RegisterForm> {
     true,
   );
   final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>(null);
+  final ValueNotifier<String> _selectedRole = ValueNotifier<String>("Owner");
 
   @override
   void dispose() {
@@ -48,6 +50,16 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ValueListenableBuilder<String?>(
+            valueListenable: _selectedRole,
+            builder: (context, value, child) => RoleSelector(
+              selectedRole: _selectedRole.value,
+              onRoleSelected: (role) {
+                _selectedRole.value = role;
+              },
+            ),
+          ),
+          VerticalSpacer(20),
           Label(label: "Full Name"),
           Input(
             hintText: "E.g: John Doe",
@@ -92,6 +104,8 @@ class _RegisterFormState extends State<RegisterForm> {
               onChanged: (value) {
                 _selectedGender.value = value;
               },
+              initialValue: _selectedGender.value,
+              validator: (value) => validateSelect(value),
             ),
           ),
           VerticalSpacer(20),
@@ -144,7 +158,14 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           ),
           VerticalSpacer(20),
-          PrimaryButton(text: "Sign Up", onPressed: () {}),
+          PrimaryButton(
+            text: "Sign Up",
+            onPressed: () {
+              if (_formRegisterKey.currentState!.validate()) {
+                // Perform registration logic here
+              }
+            },
+          ),
         ],
       ),
     );

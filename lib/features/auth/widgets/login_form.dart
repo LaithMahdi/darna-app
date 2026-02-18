@@ -86,7 +86,14 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           VerticalSpacer(20),
-          PrimaryButton(text: "Sign In", onPressed: () {}),
+          PrimaryButton(
+            text: "Sign In",
+            onPressed: () {
+              if (_formLoginKey.currentState!.validate()) {
+                // Perform login logic here
+              }
+            },
+          ),
         ],
       ),
     );

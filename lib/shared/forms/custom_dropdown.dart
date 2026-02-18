@@ -11,6 +11,7 @@ class CustomDropdown<T> extends StatelessWidget {
     this.initialValue,
     this.prefixIcon,
     this.hintText = "Select ...",
+    this.validator,
   });
 
   final List<DropdownMenuItem<T>>? items;
@@ -18,6 +19,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final T? initialValue;
   final String hintText;
   final Widget? prefixIcon;
+  final String? Function(T? value)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CustomDropdown<T> extends StatelessWidget {
       ),
       icon: Icon(LucideIcons.chevronDown, color: AppColor.grey9A, size: 20),
       style: AppStyle.styleSemiBold14.copyWith(color: AppColor.black),
+      validator: validator,
       borderRadius: BorderRadius.circular(7),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
