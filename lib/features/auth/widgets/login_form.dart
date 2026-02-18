@@ -23,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formLoginKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final ValueNotifier<bool> _isPasswordObscure = ValueNotifier<bool>(true);
 
   @override
   void dispose() {
@@ -49,15 +50,27 @@ class _LoginFormState extends State<LoginForm> {
           ),
           VerticalSpacer(20),
           Label(label: "Password"),
-          Input(
-            hintText: "E.g: ********",
-            controller: _passwordController,
-            prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
-            obscureText: true,
-            suffixIcon: AuthObscureButton(isObscure: true, onPressed: () {}),
-            keyboardType: TextInputType.visiblePassword,
-            validator: (value) =>
-                validateInput(value, type: InputType.password, min: 8, max: 25),
+          ValueListenableBuilder<bool>(
+            valueListenable: _isPasswordObscure,
+            builder: (context, value, child) => Input(
+              hintText: "E.g: ********",
+              controller: _passwordController,
+              prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
+              obscureText: value,
+              suffixIcon: AuthObscureButton(
+                isObscure: value,
+                onPressed: () {
+                  _isPasswordObscure.value = !_isPasswordObscure.value;
+                },
+              ),
+              keyboardType: TextInputType.visiblePassword,
+              validator: (value) => validateInput(
+                value,
+                type: InputType.password,
+                min: 8,
+                max: 25,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.centerRight,

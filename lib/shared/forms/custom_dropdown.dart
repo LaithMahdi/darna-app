@@ -1,52 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../core/constants/app_color.dart';
 import '../../core/constants/app_style.dart';
 
-class Input extends StatelessWidget {
-  const Input({
+class CustomDropdown<T> extends StatelessWidget {
+  const CustomDropdown({
     super.key,
-    required this.hintText,
-    required this.controller,
-    this.keyboardType,
-    this.validator,
-    this.maxLines,
-    this.obscureText,
+    this.items,
+    this.onChanged,
+    this.initialValue,
     this.prefixIcon,
-    this.suffixIcon,
-    this.readOnly = false,
+    this.hintText = "Select ...",
   });
 
+  final List<DropdownMenuItem<T>>? items;
+  final void Function(T? value)? onChanged;
+  final T? initialValue;
   final String hintText;
-  final TextEditingController controller;
-  final TextInputType? keyboardType;
-  final String? Function(String? value)? validator;
-  final int? maxLines;
-  final bool? obscureText;
   final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      style: AppStyle.styleSemiBold14,
-      controller: controller,
-      keyboardType: keyboardType ?? TextInputType.text,
-      validator: validator,
-      maxLines: maxLines ?? 1,
-      obscureText: obscureText ?? false,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      cursorColor: AppColor.black,
-      onTapOutside: (event) {
-        FocusScope.of(context).unfocus();
-      },
-      readOnly: readOnly,
+    return DropdownButtonFormField<T>(
+      items: items,
+      onChanged: onChanged,
+      initialValue: initialValue,
+      hint: Text(
+        hintText,
+        style: AppStyle.styleMedium13.copyWith(color: AppColor.grey9A),
+      ),
+      icon: Icon(LucideIcons.chevronDown, color: AppColor.grey9A, size: 20),
+      style: AppStyle.styleSemiBold14.copyWith(color: AppColor.black),
+      borderRadius: BorderRadius.circular(7),
       decoration: InputDecoration(
-        errorStyle: AppStyle.styleSemiBold12.copyWith(color: AppColor.error),
-        floatingLabelBehavior: FloatingLabelBehavior.auto,
         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        hintText: hintText,
-        hintStyle: AppStyle.styleMedium13.copyWith(color: AppColor.grey9A),
         filled: true,
         fillColor: AppColor.whiteFA,
         border: OutlineInputBorder(
@@ -69,8 +56,8 @@ class Input extends StatelessWidget {
           borderRadius: BorderRadius.circular(7),
           borderSide: BorderSide(color: AppColor.error),
         ),
+        errorStyle: AppStyle.styleSemiBold12.copyWith(color: AppColor.error),
         prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
       ),
     );
   }

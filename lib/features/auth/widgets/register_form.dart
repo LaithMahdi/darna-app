@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../core/constants/app_style.dart';
 import '../../../core/functions/valid_input.dart';
 import '../../../shared/buttons/primary_button.dart';
+import '../../../shared/forms/custom_dropdown.dart';
 import '../../../shared/forms/input.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
@@ -23,6 +25,11 @@ class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final ValueNotifier<bool> _isPasswordObscure = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isConfirmPasswordObscure = ValueNotifier<bool>(
+    true,
+  );
+  final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>(null);
 
   @override
   void dispose() {
@@ -60,7 +67,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 validateInput(value, type: InputType.email, min: 8, max: 150),
           ),
           VerticalSpacer(20),
-
           Label(label: "Phone Number"),
           Input(
             hintText: "E.g: 0123456789",
@@ -71,28 +77,71 @@ class _RegisterFormState extends State<RegisterForm> {
                 validateInput(value, type: InputType.number, min: 8, max: 8),
           ),
           VerticalSpacer(20),
+          Label(label: "Gender"),
+          ValueListenableBuilder<String?>(
+            valueListenable: _selectedGender,
+            builder: (context, value, child) => CustomDropdown<String>(
+              hintText: "Select your gender",
+              prefixIcon: const CustomPrefixIcon(icon: LucideIcons.shield),
+              items: ["Male", "Female"].map((gender) {
+                return DropdownMenuItem<String>(
+                  value: gender,
+                  child: Text(gender, style: AppStyle.styleSemiBold14),
+                );
+              }).toList(),
+              onChanged: (value) {
+                _selectedGender.value = value;
+              },
+            ),
+          ),
+          VerticalSpacer(20),
           Label(label: "Password"),
-          Input(
-            hintText: "E.g: ********",
-            controller: _passwordController,
-            prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
-            obscureText: true,
-            suffixIcon: AuthObscureButton(isObscure: true, onPressed: () {}),
-            keyboardType: TextInputType.visiblePassword,
-            validator: (value) =>
-                validateInput(value, type: InputType.password, min: 8, max: 25),
+          ValueListenableBuilder<bool>(
+            valueListenable: _isPasswordObscure,
+            builder: (context, value, child) => Input(
+              hintText: "E.g: ********",
+              controller: _passwordController,
+              prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
+              obscureText: value,
+              suffixIcon: AuthObscureButton(
+                isObscure: value,
+                onPressed: () {
+                  _isPasswordObscure.value = !_isPasswordObscure.value;
+                },
+              ),
+              keyboardType: TextInputType.visiblePassword,
+              validator: (value) => validateInput(
+                value,
+                type: InputType.password,
+                min: 8,
+                max: 25,
+              ),
+            ),
           ),
           VerticalSpacer(20),
           Label(label: "Confirm Password"),
-          Input(
-            hintText: "E.g: ********",
-            controller: _confirmPasswordController,
-            prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
-            obscureText: true,
-            suffixIcon: AuthObscureButton(isObscure: true, onPressed: () {}),
-            keyboardType: TextInputType.visiblePassword,
-            validator: (value) =>
-                validateInput(value, type: InputType.password, min: 8, max: 25),
+          ValueListenableBuilder<bool>(
+            valueListenable: _isConfirmPasswordObscure,
+            builder: (context, value, child) => Input(
+              hintText: "E.g: ********",
+              controller: _confirmPasswordController,
+              prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
+              obscureText: value,
+              suffixIcon: AuthObscureButton(
+                isObscure: value,
+                onPressed: () {
+                  _isConfirmPasswordObscure.value =
+                      !_isConfirmPasswordObscure.value;
+                },
+              ),
+              keyboardType: TextInputType.visiblePassword,
+              validator: (value) => validateInput(
+                value,
+                type: InputType.password,
+                min: 8,
+                max: 25,
+              ),
+            ),
           ),
           VerticalSpacer(20),
           PrimaryButton(text: "Sign Up", onPressed: () {}),
