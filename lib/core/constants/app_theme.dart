@@ -6,6 +6,7 @@ class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     fontFamily: Config.fontFamily,
     primaryColor: AppColor.primary,
+    scaffoldBackgroundColor: AppColor.white,
     colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primary),
   );
 }
