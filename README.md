@@ -1,7 +1,7 @@
-# Coloc'App - Shared Living Management Application
+# Darna - Shared Living Management Application
 
 <div align="center">
-  <img src="assets/images/logo/logo.png" alt="Coloc'App Logo" width="200"/>
+  <img src="assets/images/logo/logo.png" alt="Darna Logo" width="200"/>
   
   [![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?logo=flutter)](https://flutter.dev)
   [![Firebase](https://img.shields.io/badge/Firebase-Platform-FFA611?logo=firebase)](https://firebase.google.com)
@@ -11,9 +11,9 @@
 
 ## 📖 Overview
 
-**Coloc'App** is a mobile application designed to simplify and organize shared living for roommates. The application provides a centralized digital platform that helps users manage daily tasks, track shared expenses, communicate efficiently, and store important documents related to their colocation.
+**Darna** is a mobile application designed to simplify and organize shared living for roommates. The application provides a centralized digital platform that helps users manage daily tasks, track shared expenses, communicate efficiently, and store important documents related to their colocation.
 
-Living in a shared home often leads to challenges such as poor task distribution, unclear expense tracking, and communication issues. Coloc'App addresses these problems by offering structured tools that promote transparency, responsibility, and collaboration among roommates.
+Living in a shared home often leads to challenges such as poor task distribution, unclear expense tracking, and communication issues. Darna addresses these problems by offering structured tools that promote transparency, responsibility, and collaboration among roommates.
 
 ## ✨ Key Features
 
@@ -85,7 +85,7 @@ The system includes two main roles:
 ## 🎨 Design
 
 Access the complete UI/UX design on Figma:
-[**Coloc'App Design**](https://www.figma.com/design/VzYG5ZaDnbgDahrqhKzNal/darna-app?node-id=0-1&t=mPRJU5V4Ss4DOi4V-1)
+[**Darna Design**](https://www.figma.com/design/VzYG5ZaDnbgDahrqhKzNal/darna-app?node-id=0-1&t=mPRJU5V4Ss4DOi4V-1)
 
 ## 📊 Use Cases
 
@@ -341,13 +341,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, email support@colocapp.com or create an issue in this repository.
+For support, email support@darna.com or create an issue in this repository.
 
 ## 🙏 Acknowledgments
 
 - Flutter team for the amazing framework
 - Firebase for the comprehensive backend solution
-- All contributors who help improve Coloc'App
+- All contributors who help improve Darna
 
 ---
 
