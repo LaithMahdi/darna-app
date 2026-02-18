@@ -36,7 +36,10 @@ class Input extends StatelessWidget {
       maxLines: maxLines ?? 1,
       obscureText: obscureText ?? false,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-
+      cursorColor: AppColor.black,
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+      },
       readOnly: readOnly,
       decoration: InputDecoration(
         errorStyle: AppStyle.styleSemiBold12.copyWith(color: AppColor.error),

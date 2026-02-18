@@ -1,18 +1,12 @@
-import 'package:darna/core/constants/app_color.dart';
-import 'package:darna/core/constants/app_image.dart';
-import 'package:darna/core/constants/app_style.dart';
-import 'package:darna/core/functions/valid_input.dart';
-import 'package:darna/shared/forms/input.dart';
-import 'package:darna/shared/spacer/spacer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
-
 import '../../../core/config.dart';
-import '../../../shared/icones/custom_prefix_icon.dart';
+import '../../../core/constants/app_image.dart';
+import '../../../shared/buttons/custom_text_icon_button.dart';
 import '../../../shared/logo.dart';
-import '../../../shared/text/label.dart';
-import '../widgets/auth_obscure_button.dart';
+import '../../../shared/spacer/spacer.dart';
+import '../widgets/auth_text_button.dart';
+import '../widgets/login_form.dart';
+import '../widgets/login_or_text_lines.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -20,35 +14,37 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: Config.defaultPadding,
-        children: [
-          VerticalSpacer(44),
-          Logo(),
-          VerticalSpacer(41),
-          Label(label: "Email Address"),
-          Input(
-            hintText: "E.g: example@gmail.com",
-            controller: TextEditingController(),
-            prefixIcon: CustomPrefixIcon(icon: LucideIcons.mail),
-            keyboardType: TextInputType.emailAddress,
-            validator: (value) =>
-                validateInput(value, type: InputType.email, min: 8, max: 150),
+      body: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: Config.defaultPadding,
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  VerticalSpacer(44),
+                  Logo(),
+                  VerticalSpacer(41),
+                  LoginForm(),
+                  VerticalSpacer(23),
+                  LoginOrTextLines(),
+                  VerticalSpacer(30),
+                  CustomTextIconButton(
+                    text: "Continue with Google",
+                    iconPath: AppImage.imagesGoogle,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
           ),
-          VerticalSpacer(20),
-          Label(label: "Password"),
-          Input(
-            hintText: "E.g: example@gmail.com",
-            controller: TextEditingController(),
-            prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
-            obscureText: true,
-            suffixIcon: AuthObscureButton(isObscure: true, onPressed: () {}),
-            keyboardType: TextInputType.visiblePassword,
-            validator: (value) =>
-                validateInput(value, type: InputType.password, min: 8, max: 25),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: AuthTextButton(
+              label: "Don't have an account?",
+              subLabel: "Sign Up",
+              onPressed: () {},
+            ),
           ),
-          VerticalSpacer(20),
-          TextButton(onPressed: () {}, child: const Text("Forgot Password ?")),
         ],
       ),
     );
