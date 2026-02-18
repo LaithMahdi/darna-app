@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "783500905928",
+    "project_id": "darna-app-65629",
+    "storage_bucket": "darna-app-65629.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783500905928:android:8125daa9af9876eb6b44fd",
+        "android_client_info": {
+          "package_name": "com.example.darna"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcP_DrYrz9jZiyCQplOJ_rdMh5ZPm7qRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
