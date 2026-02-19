@@ -1,3 +1,4 @@
+import 'package:darna/core/functions/show_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,7 @@ import '../../../shared/forms/input.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
+import '../view_models/auth_view_model.dart';
 import 'auth_obscure_button.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
@@ -22,8 +24,12 @@ class LoginForm extends ConsumerStatefulWidget {
 
 class _LoginFormState extends ConsumerState<LoginForm> {
   final GlobalKey<FormState> _formLoginKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(
+    text: "mahdi@gmail.com",
+  );
+  final TextEditingController _passwordController = TextEditingController(
+    text: "123456789",
+  );
   final ValueNotifier<bool> _isPasswordObscure = ValueNotifier<bool>(true);
 
   @override
@@ -31,6 +37,23 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void onLoggin() async {
+    final authViewModel = ref.read(authViewModelProvider.notifier);
+    final success = await authViewModel.signInWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    if (success && mounted) {
+      // Navigate to home or main screen after successful login
+      // GoRouter.of(context).go(Routes.home);
+    } else if (mounted) {
+      final errorMessage = ref.read(authViewModelProvider).errorMessage;
+      showToast(context, errorMessage ?? "Login failed", isError: true);
+      debugPrint('Login failed: $errorMessage');
+    }
   }
 
   @override
@@ -89,9 +112,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           VerticalSpacer(20),
           PrimaryButton(
             text: "Sign In",
+            isLoading: ref.watch(authViewModelProvider).isLoading,
             onPressed: () {
               if (_formLoginKey.currentState!.validate()) {
-                // Perform login logic here
+                onLoggin();
               }
             },
           ),

@@ -3,6 +3,17 @@ import '../models/auth_state.dart';
 import '../models/user_model.dart';
 import '../service/auth_service.dart';
 
+final authServiceProvider = Provider<AuthService>((ref) {
+  return AuthService();
+});
+
+final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>((
+  ref,
+) {
+  final authService = ref.watch(authServiceProvider);
+  return AuthViewModel(authService);
+});
+
 class AuthViewModel extends StateNotifier<AuthState> {
   final AuthService _authService;
 
