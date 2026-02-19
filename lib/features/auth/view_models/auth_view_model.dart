@@ -71,4 +71,30 @@ class AuthViewModel extends StateNotifier<AuthState> {
       },
     );
   }
+
+  // Sign in with Google
+  Future<bool> signInWithGoogle() async {
+    final result = await _authService.signInWithGoogle();
+    return result.fold(
+      (error) {
+        state = AuthState.error(error);
+        return false;
+      },
+      (firebaseUser) {
+        if (firebaseUser != null) {
+          state = AuthState.authenticated(
+            UserModel(
+              uid: firebaseUser.uid,
+              email: firebaseUser.email!,
+              fullName: firebaseUser.displayName,
+            ),
+          );
+          return true;
+        } else {
+          state = AuthState.error('Google sign-in failed');
+          return false;
+        }
+      },
+    );
+  }
 }

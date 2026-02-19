@@ -28,4 +28,7 @@ final class Env {
 
   @EnviedField(varName: 'FIREBASE_IOS_BUNDLE_ID')
   static final String firebaseIosBundleId = _Env.firebaseIosBundleId;
+
+  @EnviedField(varName: 'FIREBASE_WEB_CLIENT_ID')
+  static final String firebaseWebClientId = _Env.firebaseWebClientId;
 }

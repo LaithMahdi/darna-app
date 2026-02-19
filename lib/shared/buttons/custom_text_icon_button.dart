@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../core/constants/app_color.dart';
 import '../../core/constants/app_style.dart';
 
@@ -10,6 +11,7 @@ class CustomTextIconButton extends StatelessWidget {
     required this.onPressed,
     this.backgroundColor,
     this.foregroundColor,
+    this.isLoading = false,
   });
 
   final String text;
@@ -17,11 +19,12 @@ class CustomTextIconButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColor.white,
         foregroundColor: foregroundColor ?? AppColor.black,
@@ -33,18 +36,20 @@ class CustomTextIconButton extends StatelessWidget {
           side: BorderSide(color: AppColor.whiteDA),
         ),
       ),
-      child: Row(
-        spacing: 10,
-        children: [
-          Image.asset(iconPath, width: 22, height: 22),
-          Text(
-            text,
-            style: AppStyle.styleMedium13.copyWith(
-              color: foregroundColor ?? AppColor.black,
+      child: isLoading
+          ? SpinKitCircle(color: foregroundColor ?? AppColor.black, size: 22)
+          : Row(
+              spacing: 10,
+              children: [
+                Image.asset(iconPath, width: 22, height: 22),
+                Text(
+                  text,
+                  style: AppStyle.styleMedium13.copyWith(
+                    color: foregroundColor ?? AppColor.black,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -1,17 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/config.dart';
 import '../../../core/constants/app_image.dart';
+import '../../../core/functions/show_toast.dart';
 import '../../../routes/routes.dart';
 import '../../../shared/buttons/custom_text_icon_button.dart';
 import '../../../shared/logo.dart';
 import '../../../shared/spacer/spacer.dart';
+import '../view_models/auth_view_model.dart';
 import '../widgets/auth_text_button.dart';
 import '../widgets/login_form.dart';
 import '../widgets/login_or_text_lines.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
+
+  @override
+  ConsumerState<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
+  void onGoogleSignIn() async {
+    final authViewModel = ref.read(authViewModelProvider.notifier);
+    final success = await authViewModel.signInWithGoogle();
+    if (success && context.mounted) {
+      // Navigate to home or main screen after successful login
+      // GoRouter.of(context).go(Routes.home);
+    } else if (context.mounted) {
+      final errorMessage = ref.read(authViewModelProvider).errorMessage;
+      showToast(
+        context,
+        errorMessage ?? "Google sign-in failed",
+        isError: true,
+      );
+      debugPrint('Google sign-in failed: $errorMessage');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +58,7 @@ class LoginView extends StatelessWidget {
                   CustomTextIconButton(
                     text: "Continue with Google",
                     iconPath: AppImage.imagesGoogle,
-                    onPressed: () {},
+                    onPressed: () async => onGoogleSignIn(),
                   ),
                 ],
               ),

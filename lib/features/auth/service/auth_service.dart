@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../../../core/config/env.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
@@ -28,6 +30,27 @@ class AuthService {
       return Left(_handleAuthException(e));
     } catch (e) {
       return Left('An unknown error occurred');
+    }
+  }
+
+  // Sign in with Google
+  Future<Either<String, User?>> signInWithGoogle() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+      await googleSignIn.initialize(serverClientId: Env.firebaseWebClientId);
+      final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+      final userCredential = await _firebaseAuth.signInWithCredential(
+        credential,
+      );
+      return Right(userCredential.user);
+    } on FirebaseAuthException catch (e) {
+      return Left(_handleAuthException(e));
+    } catch (e) {
+      return Left('Google sign-in failed: ${e.toString()}');
     }
   }
 

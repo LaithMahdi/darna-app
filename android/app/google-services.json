@@ -12,7 +12,20 @@
           "package_name": "com.example.darna"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "941324326906-j79fkdd26vsbjn3rjiq5g81bk3sqn3s6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.darna",
+            "certificate_hash": "2944b6ab96710c86b827bebeefca69187c570745"
+          }
+        },
+        {
+          "client_id": "941324326906-ie7moqa47o5qavmhvlaiebdaa2jurkqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAJw1eMQMpWXCG2N9dWeCfOeOq7AEujkhE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "941324326906-ie7moqa47o5qavmhvlaiebdaa2jurkqv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "941324326906-eorie287bhd2hknud2rmqa63c76pngjl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.darna"
+              }
+            }
+          ]
         }
       }
     }

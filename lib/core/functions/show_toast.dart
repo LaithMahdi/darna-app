@@ -14,19 +14,25 @@ showToast(BuildContext context, String description, {bool isError = false}) {
             color: AppColor.white,
             size: 26,
           ),
-          Column(
-            spacing: 7,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                isError ? 'Error' : 'Success',
-                style: AppStyle.styleSemiBold14.copyWith(color: AppColor.white),
-              ),
-              Text(
-                description,
-                style: AppStyle.styleMedium12.copyWith(color: AppColor.white),
-              ),
-            ],
+          Expanded(
+            child: Column(
+              spacing: 7,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isError ? 'Error' : 'Success',
+                  style: AppStyle.styleSemiBold14.copyWith(
+                    color: AppColor.white,
+                  ),
+                ),
+                Text(
+                  description,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: AppStyle.styleMedium12.copyWith(color: AppColor.white),
+                ),
+              ],
+            ),
           ),
         ],
       ),
