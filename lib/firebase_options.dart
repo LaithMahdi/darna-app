@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:darna/core/config/env.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -17,7 +18,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,9 +29,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,49 +50,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCRlnRJdw7-R7q4bGX0ixResh3zMIY4UmE',
-    appId: '1:783500905928:web:499bbd1d22c907c56b44fd',
-    messagingSenderId: '783500905928',
-    projectId: 'darna-app-65629',
-    authDomain: 'darna-app-65629.firebaseapp.com',
-    storageBucket: 'darna-app-65629.firebasestorage.app',
-    measurementId: 'G-G13246CY18',
+  static final FirebaseOptions android = FirebaseOptions(
+    apiKey: Env.firebaseApiKeyAndroid,
+    appId: Env.firebaseAppIdAndroid,
+    messagingSenderId: Env.firebaseMessagingSenderId,
+    projectId: Env.firebaseProjectId,
+    storageBucket: Env.firebaseStorageBucket,
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAcP_DrYrz9jZiyCQplOJ_rdMh5ZPm7qRk',
-    appId: '1:783500905928:android:8125daa9af9876eb6b44fd',
-    messagingSenderId: '783500905928',
-    projectId: 'darna-app-65629',
-    storageBucket: 'darna-app-65629.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyALoVDjF-4WMrqU3b2juSZHB9AFHm2xfmk',
-    appId: '1:783500905928:ios:6f133d414c4f8d936b44fd',
-    messagingSenderId: '783500905928',
-    projectId: 'darna-app-65629',
-    storageBucket: 'darna-app-65629.firebasestorage.app',
-    iosBundleId: 'com.example.darna',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyALoVDjF-4WMrqU3b2juSZHB9AFHm2xfmk',
-    appId: '1:783500905928:ios:6f133d414c4f8d936b44fd',
-    messagingSenderId: '783500905928',
-    projectId: 'darna-app-65629',
-    storageBucket: 'darna-app-65629.firebasestorage.app',
-    iosBundleId: 'com.example.darna',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCRlnRJdw7-R7q4bGX0ixResh3zMIY4UmE',
-    appId: '1:783500905928:web:01816cfac4b927876b44fd',
-    messagingSenderId: '783500905928',
-    projectId: 'darna-app-65629',
-    authDomain: 'darna-app-65629.firebaseapp.com',
-    storageBucket: 'darna-app-65629.firebasestorage.app',
-    measurementId: 'G-PP9D9C07HY',
+  static final FirebaseOptions ios = FirebaseOptions(
+    apiKey: Env.firebaseApiKeyIos,
+    appId: Env.firebaseAppIdIos,
+    messagingSenderId: Env.firebaseMessagingSenderId,
+    projectId: Env.firebaseProjectId,
+    storageBucket: Env.firebaseStorageBucket,
+    iosBundleId: Env.firebaseIosBundleId,
   );
 }

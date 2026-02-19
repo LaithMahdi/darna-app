@@ -1,1 +1,22 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"darna-app-65629","appId":"1:783500905928:android:8125daa9af9876eb6b44fd","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"darna-app-65629","configurations":{"android":"1:783500905928:android:8125daa9af9876eb6b44fd","ios":"1:783500905928:ios:6f133d414c4f8d936b44fd","macos":"1:783500905928:ios:6f133d414c4f8d936b44fd","web":"1:783500905928:web:499bbd1d22c907c56b44fd","windows":"1:783500905928:web:01816cfac4b927876b44fd"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "darna-tn",
+          "appId": "1:941324326906:android:626e4461c57939a007b643",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "darna-tn",
+          "configurations": {
+            "android": "1:941324326906:android:626e4461c57939a007b643",
+            "ios": "1:941324326906:ios:2dd71c1cfb27faef07b643"
+          }
+        }
+      }
+    }
+  }
+}
