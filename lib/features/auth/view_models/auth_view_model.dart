@@ -72,6 +72,30 @@ class AuthViewModel extends StateNotifier<AuthState> {
     );
   }
 
+  // Register with email and password
+  Future<bool> registerWithEmailAndPassword({
+    required UserModel user,
+    required String password,
+  }) async {
+    state = AuthState.loading();
+
+    final result = await _authService.registerWithEmailAndPassword(
+      user,
+      password,
+    );
+
+    return result.fold(
+      (error) {
+        state = AuthState.error(error);
+        return false;
+      },
+      (newUser) {
+        state = AuthState.authenticated(newUser);
+        return true;
+      },
+    );
+  }
+
   // Sign in with Google
   Future<bool> signInWithGoogle() async {
     final result = await _authService.signInWithGoogle();

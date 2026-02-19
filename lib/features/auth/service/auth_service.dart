@@ -1,13 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../../core/config.dart';
 import '../../../core/config/env.dart';
+import '../models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firestore;
 
-  AuthService({FirebaseAuth? firebaseAuth})
-    : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  AuthService({FirebaseAuth? firebaseAuth, FirebaseFirestore? firestore})
+    : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+      _firestore = firestore ?? FirebaseFirestore.instance;
 
   // Get the current user
   User? get currentUser => _firebaseAuth.currentUser;
@@ -30,6 +36,52 @@ class AuthService {
       return Left(_handleAuthException(e));
     } catch (e) {
       return Left('An unknown error occurred');
+    }
+  }
+
+  // Register with email and password
+  Future<Either<String, UserModel>> registerWithEmailAndPassword(
+    UserModel user,
+    String password,
+  ) async {
+    try {
+      final UserCredential credential = await _firebaseAuth
+          .createUserWithEmailAndPassword(
+            email: user.email.trim(),
+            password: password,
+          );
+
+      if (credential.user == null) {
+        throw Exception('Failed to create user');
+      }
+      if (user.fullName != null) {
+        await credential.user!.updateDisplayName(user.fullName!);
+      }
+      final newUser = UserModel(
+        uid: credential.user!.uid,
+        email: user.email,
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        gender: user.gender,
+        role: user.role,
+        createdAt: DateTime.now(),
+      );
+      debugPrint('Saving user to Firestore: ${newUser.uid}');
+      await _firestore
+          .collection(Config.userCollection)
+          .doc(newUser.uid)
+          .set(newUser.toJson());
+      debugPrint('User saved successfully to Firestore');
+      return Right(newUser);
+    } on FirebaseAuthException catch (e) {
+      debugPrint('FirebaseAuthException: ${e.code} - ${e.message}');
+      return Left(_handleAuthException(e));
+    } on FirebaseException catch (e) {
+      debugPrint('FirebaseException: ${e.code} - ${e.message}');
+      return Left('Database error: ${e.message}');
+    } catch (e) {
+      debugPrint('Unknown error during registration: $e');
+      return Left('An unknown error occurred during registration');
     }
   }
 

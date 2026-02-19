@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_style.dart';
+import '../../../core/functions/show_toast.dart';
 import '../../../core/functions/valid_input.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/custom_dropdown.dart';
@@ -9,23 +11,33 @@ import '../../../shared/forms/role_selector.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
+import '../models/user_model.dart';
+import '../view_models/auth_view_model.dart';
 import 'auth_obscure_button.dart';
 
-class RegisterForm extends StatefulWidget {
+class RegisterForm extends ConsumerStatefulWidget {
   const RegisterForm({super.key});
 
   @override
-  State<RegisterForm> createState() => _RegisterFormState();
+  ConsumerState<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _RegisterFormState extends ConsumerState<RegisterForm> {
   final GlobalKey<FormState> _formRegisterKey = GlobalKey<FormState>();
-  final TextEditingController _fullNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController(
+    text: "Laith Mahdi",
+  );
+  final TextEditingController _emailController = TextEditingController(
+    text: "mahdi@gmail.com",
+  );
+  final TextEditingController _phoneNumberController = TextEditingController(
+    text: "99999999",
+  );
   final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+      TextEditingController(text: "123456789");
+  final TextEditingController _passwordController = TextEditingController(
+    text: "123456789",
+  );
   final ValueNotifier<bool> _isPasswordObscure = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _isConfirmPasswordObscure = ValueNotifier<bool>(
     true,
@@ -41,6 +53,30 @@ class _RegisterFormState extends State<RegisterForm> {
     _phoneNumberController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  void onRegister() async {
+    final authViewModel = ref.read(authViewModelProvider.notifier);
+    final success = await authViewModel.registerWithEmailAndPassword(
+      user: UserModel(
+        uid: '',
+        email: _emailController.text,
+        fullName: _fullNameController.text,
+        phoneNumber: _phoneNumberController.text,
+        role: _selectedRole.value,
+        gender: _selectedGender.value!,
+      ),
+      password: _passwordController.text,
+    );
+
+    if (success && mounted) {
+      // Navigate to home or main screen after successful login
+      // GoRouter.of(context).go(Routes.home);
+    } else if (mounted) {
+      final errorMessage = ref.read(authViewModelProvider).errorMessage;
+      showToast(context, errorMessage ?? "Registration failed", isError: true);
+      debugPrint('Registration failed: $errorMessage');
+    }
   }
 
   @override
@@ -160,9 +196,10 @@ class _RegisterFormState extends State<RegisterForm> {
           VerticalSpacer(20),
           PrimaryButton(
             text: "Sign Up",
+            isLoading: ref.watch(authViewModelProvider).isLoading,
             onPressed: () {
               if (_formRegisterKey.currentState!.validate()) {
-                // Perform registration logic here
+                onRegister();
               }
             },
           ),
