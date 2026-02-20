@@ -1,7 +1,7 @@
-import 'package:darna/core/constants/app_style.dart';
 import 'package:flutter/material.dart';
 import '../config.dart';
 import 'app_color.dart';
+import 'app_style.dart';
 
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
@@ -18,5 +18,22 @@ class AppTheme {
       scrolledUnderElevation: 0,
     ),
     colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primary),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: AppColor.white,
+      showDragHandle: true,
+      dragHandleSize: Size(100, 7),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      constraints: BoxConstraints(maxHeight: 500),
+      dragHandleColor: AppColor.whiteDA,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppColor.primary,
+      foregroundColor: AppColor.white,
+      shape: CircleBorder(),
+      highlightElevation: 0,
+      elevation: 0,
+    ),
   );
 }
