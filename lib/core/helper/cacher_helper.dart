@@ -4,6 +4,7 @@ import '../service/cacher_service.dart';
 class CacherHelper {
   final _service = GetIt.instance.get<CacheService>();
   final String _isOnboardingCompletedKey = 'is_onboarding_completed';
+  final String _isCompletProfileKey = 'is_complet_profile';
 
   CacherHelper();
 
@@ -14,6 +15,14 @@ class CacherHelper {
   bool isOnboardingCompleted() {
     return _service.sharedPreferences.getBool(_isOnboardingCompletedKey) ??
         false;
+  }
+
+  Future<void> setCompletProfile(bool value) async {
+    await _service.sharedPreferences.setBool(_isCompletProfileKey, value);
+  }
+
+  bool isCompletProfile() {
+    return _service.sharedPreferences.getBool(_isCompletProfileKey) ?? false;
   }
 
   // Clear data

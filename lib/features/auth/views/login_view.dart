@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config.dart';
 import '../../../core/constants/app_image.dart';
 import '../../../core/functions/show_toast.dart';
+import '../../../core/helper/cacher_helper.dart';
 import '../../../routes/routes.dart';
 import '../../../shared/buttons/custom_text_icon_button.dart';
 import '../../../shared/logo.dart';
@@ -26,7 +27,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final success = await authViewModel.signInWithGoogle();
     if (success && context.mounted) {
       // Navigate to home or main screen after successful login
-      // GoRouter.of(context).go(Routes.home);
+      CacherHelper().setCompletProfile(true);
+      GoRouter.of(context).go(Routes.completProfile);
     } else if (context.mounted) {
       final errorMessage = ref.read(authViewModelProvider).errorMessage;
       showToast(

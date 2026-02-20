@@ -3,6 +3,7 @@ import '../core/helper/cacher_helper.dart';
 import '../features/auth/views/forgot_password_view.dart';
 import '../features/auth/views/login_view.dart';
 import '../features/auth/views/register_view.dart';
+import '../features/complet_profile/views/complet_profile_screen.dart';
 import '../features/onboarding/views/onboarding_view.dart';
 import '../features/splash/splash_view.dart';
 
@@ -12,6 +13,7 @@ abstract class Routes {
   static const String login = '/login';
   static const String register = '/register';
   static const String forgotPassword = '/forgot-password';
+  static const String completProfile = '/complet-profile';
 
   static final router = GoRouter(
     initialLocation: splash,
@@ -27,7 +29,16 @@ abstract class Routes {
           return null;
         },
       ),
-      GoRoute(path: login, builder: (context, state) => const LoginView()),
+      GoRoute(
+        path: login,
+        builder: (context, state) => const LoginView(),
+        redirect: (context, state) {
+          if (CacherHelper().isCompletProfile()) {
+            return completProfile;
+          }
+          return null;
+        },
+      ),
       GoRoute(
         path: register,
         builder: (context, state) => const RegisterView(),
@@ -35,6 +46,10 @@ abstract class Routes {
       GoRoute(
         path: forgotPassword,
         builder: (context, state) => const ForgotPasswordView(),
+      ),
+      GoRoute(
+        path: completProfile,
+        builder: (context, state) => const CompletProfileScreen(),
       ),
     ],
   );
