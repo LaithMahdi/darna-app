@@ -3,7 +3,9 @@ import '../core/helper/cacher_helper.dart';
 import '../features/auth/views/forgot_password_view.dart';
 import '../features/auth/views/login_view.dart';
 import '../features/auth/views/register_view.dart';
+import '../features/colocation/views/create_colocation_view.dart';
 import '../features/complet_profile/views/complet_profile_screen.dart';
+import '../features/layout/views/layout_view.dart';
 import '../features/onboarding/views/onboarding_view.dart';
 import '../features/splash/splash_view.dart';
 
@@ -14,6 +16,8 @@ abstract class Routes {
   static const String register = '/register';
   static const String forgotPassword = '/forgot-password';
   static const String completProfile = '/complet-profile';
+  static const String createColocation = '/create-colocation';
+  static const String layout = '/layout';
 
   static final router = GoRouter(
     initialLocation: splash,
@@ -51,6 +55,11 @@ abstract class Routes {
         path: completProfile,
         builder: (context, state) => const CompletProfileScreen(),
       ),
+      GoRoute(
+        path: createColocation,
+        builder: (context, state) => const CreateColocationView(),
+      ),
+      GoRoute(path: layout, builder: (context, state) => const LayoutView()),
     ],
   );
 }
