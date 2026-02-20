@@ -35,5 +35,12 @@ class AppTheme {
       highlightElevation: 0,
       elevation: 0,
     ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: AppColor.white,
+      shape: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide.none,
+      ),
+    ),
   );
 }

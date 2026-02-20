@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
 import '../widgets/complet_profile_appbar.dart';
+import '../widgets/complet_profile_dialog.dart';
 import '../widgets/complet_profile_view_body.dart';
 
 class CompletProfileScreen extends StatelessWidget {
@@ -17,7 +18,12 @@ class CompletProfileScreen extends StatelessWidget {
       ),
       body: CompletProfileViewBody(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => CompletProfileDialog(),
+          );
+        },
         child: const Icon(LucideIcons.arrowRight),
       ),
     );
