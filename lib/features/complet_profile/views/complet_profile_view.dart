@@ -5,8 +5,8 @@ import '../widgets/complet_profile_appbar.dart';
 import '../widgets/complet_profile_dialog.dart';
 import '../widgets/complet_profile_view_body.dart';
 
-class CompletProfileScreen extends StatelessWidget {
-  const CompletProfileScreen({super.key});
+class CompletProfileView extends StatelessWidget {
+  const CompletProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

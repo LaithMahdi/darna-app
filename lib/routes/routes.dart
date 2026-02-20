@@ -4,7 +4,7 @@ import '../features/auth/views/forgot_password_view.dart';
 import '../features/auth/views/login_view.dart';
 import '../features/auth/views/register_view.dart';
 import '../features/colocation/views/create_colocation_view.dart';
-import '../features/complet_profile/views/complet_profile_screen.dart';
+import '../features/complet_profile/views/complet_profile_view.dart';
 import '../features/layout/views/layout_view.dart';
 import '../features/onboarding/views/onboarding_view.dart';
 import '../features/splash/splash_view.dart';
@@ -53,7 +53,7 @@ abstract class Routes {
       ),
       GoRoute(
         path: completProfile,
-        builder: (context, state) => const CompletProfileScreen(),
+        builder: (context, state) => const CompletProfileView(),
       ),
       GoRoute(
         path: createColocation,
