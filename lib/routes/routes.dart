@@ -53,9 +53,9 @@ abstract class Routes {
           child: const LoginView(),
         ),
         redirect: (context, state) {
-          // if (CacherHelper().isCompletProfile()) {
-          //   return completProfile;
-          // }
+          if (CacherHelper().isCompletProfile()) {
+            return completProfile;
+          }
           return null;
         },
       ),

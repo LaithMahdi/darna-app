@@ -121,4 +121,22 @@ class AuthViewModel extends StateNotifier<AuthState> {
       },
     );
   }
+
+  // Send password reset email
+  Future<bool> sendPasswordResetEmail({required String email}) async {
+    state = AuthState.loading();
+
+    final result = await _authService.sendPasswordResetEmail(email: email);
+
+    return result.fold(
+      (error) {
+        state = AuthState.error(error);
+        return false;
+      },
+      (_) {
+        state = AuthState.unauthenticated();
+        return true;
+      },
+    );
+  }
 }
