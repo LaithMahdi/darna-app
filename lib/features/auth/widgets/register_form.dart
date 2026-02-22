@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_style.dart';
 import '../../../core/functions/show_toast.dart';
 import '../../../core/functions/valid_input.dart';
+import '../../../core/helper/cacher_helper.dart';
+import '../../../routes/routes.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/custom_dropdown.dart';
 import '../../../shared/forms/input.dart';
@@ -42,7 +45,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
   final ValueNotifier<bool> _isConfirmPasswordObscure = ValueNotifier<bool>(
     true,
   );
-  final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>("Male");
   final ValueNotifier<String> _selectedRole = ValueNotifier<String>("Owner");
 
   @override
@@ -70,13 +73,24 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
     );
 
     if (success && mounted) {
-      // Navigate to home or main screen after successful login
-      // GoRouter.of(context).go(Routes.home);
+      onReset();
+      CacherHelper().setCompletProfile(true);
+      GoRouter.of(context).go(Routes.completProfile);
     } else if (mounted) {
       final errorMessage = ref.read(authViewModelProvider).errorMessage;
       showToast(context, errorMessage ?? "Registration failed", isError: true);
       debugPrint('Registration failed: $errorMessage');
     }
+  }
+
+  void onReset() {
+    _fullNameController.clear();
+    _emailController.clear();
+    _phoneNumberController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+    _selectedGender.value = null;
+    _selectedRole.value = "Owner";
   }
 
   @override
