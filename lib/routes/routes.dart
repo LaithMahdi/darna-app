@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/helper/cacher_helper.dart';
 import '../features/auth/views/forgot_password_view.dart';
@@ -22,10 +23,21 @@ abstract class Routes {
   static final router = GoRouter(
     initialLocation: splash,
     routes: [
-      GoRoute(path: splash, builder: (context, state) => const SplashView()),
+      GoRoute(
+        path: splash,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const SplashView(),
+        ),
+      ),
       GoRoute(
         path: onboarding,
-        builder: (context, state) => const OnboardingView(),
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const OnboardingView(),
+        ),
         redirect: (context, state) {
           if (CacherHelper().isOnboardingCompleted()) {
             return login;
@@ -35,31 +47,90 @@ abstract class Routes {
       ),
       GoRoute(
         path: login,
-        builder: (context, state) => const LoginView(),
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const LoginView(),
+        ),
         redirect: (context, state) {
-          if (CacherHelper().isCompletProfile()) {
-            return completProfile;
-          }
+          // if (CacherHelper().isCompletProfile()) {
+          //   return completProfile;
+          // }
           return null;
         },
       ),
       GoRoute(
         path: register,
-        builder: (context, state) => const RegisterView(),
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const RegisterView(),
+        ),
       ),
       GoRoute(
         path: forgotPassword,
-        builder: (context, state) => const ForgotPasswordView(),
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const ForgotPasswordView(),
+        ),
       ),
       GoRoute(
         path: completProfile,
-        builder: (context, state) => const CompletProfileView(),
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const CompletProfileView(),
+        ),
       ),
       GoRoute(
         path: createColocation,
-        builder: (context, state) => const CreateColocationView(),
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const CreateColocationView(),
+        ),
       ),
-      GoRoute(path: layout, builder: (context, state) => const LayoutView()),
+      GoRoute(
+        path: layout,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const LayoutView(),
+        ),
+      ),
     ],
   );
+
+  static Page<dynamic> _buildPageWithTransition({
+    required BuildContext context,
+    required GoRouterState state,
+    required Widget child,
+  }) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOutCubic;
+
+        var tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
+
+        var offsetAnimation = animation.drive(tween);
+        var fadeAnimation = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeIn,
+        );
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: FadeTransition(opacity: fadeAnimation, child: child),
+        );
+      },
+    );
+  }
 }

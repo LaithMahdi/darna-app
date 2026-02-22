@@ -37,6 +37,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _isPasswordObscure.dispose();
     super.dispose();
   }
 
@@ -102,7 +103,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             child: TextButton(
               onPressed: () => GoRouter.of(context).push(Routes.forgotPassword),
               child: Text(
-                "Forgot Password ?",
+                "Forgot Password?",
                 style: AppStyle.styleBold12.copyWith(
                   color: AppColor.grey9A,
                   decoration: TextDecoration.underline,

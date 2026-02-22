@@ -14,6 +14,7 @@ class Input extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.readOnly = false,
+    this.onChanged,
   });
 
   final String hintText;
@@ -25,6 +26,7 @@ class Input extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool readOnly;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class Input extends StatelessWidget {
       obscureText: obscureText ?? false,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       cursorColor: AppColor.black,
+      onChanged: onChanged,
       onTapOutside: (event) {
         FocusScope.of(context).unfocus();
       },

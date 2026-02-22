@@ -14,19 +14,13 @@ import '../widgets/auth_text_button.dart';
 import '../widgets/login_form.dart';
 import '../widgets/login_or_text_lines.dart';
 
-class LoginView extends ConsumerStatefulWidget {
+class LoginView extends ConsumerWidget {
   const LoginView({super.key});
 
-  @override
-  ConsumerState<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends ConsumerState<LoginView> {
-  void onGoogleSignIn() async {
+  void onGoogleSignIn(BuildContext context, WidgetRef ref) async {
     final authViewModel = ref.read(authViewModelProvider.notifier);
     final success = await authViewModel.signInWithGoogle();
     if (success && context.mounted) {
-      // Navigate to home or main screen after successful login
       CacherHelper().setCompletProfile(true);
       GoRouter.of(context).go(Routes.completProfile);
     } else if (context.mounted) {
@@ -41,7 +35,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -60,7 +54,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   CustomTextIconButton(
                     text: "Continue with Google",
                     iconPath: AppImage.imagesGoogle,
-                    onPressed: () async => onGoogleSignIn(),
+                    onPressed: () async => onGoogleSignIn(context, ref),
                   ),
                 ],
               ),
