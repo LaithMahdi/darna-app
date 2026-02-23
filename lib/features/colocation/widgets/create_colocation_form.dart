@@ -4,6 +4,7 @@ import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/input.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
+import 'create_colocation_dialog.dart';
 
 class CreateColocationForm extends StatefulWidget {
   const CreateColocationForm({super.key});
@@ -46,13 +47,19 @@ class _CreateColocationFormState extends State<CreateColocationForm> {
             hintText: "E.g: 4",
             controller: _maxMembersController,
             keyboardType: TextInputType.number,
-            validator: (value) => validateInput(value, isRequired: false),
+            validator: (value) =>
+                validateInput(value, min: 1, max: 2, isRequired: false),
           ),
           VerticalSpacer(20),
           PrimaryButton(
             text: "Save",
             onPressed: () {
-              if (_createColocationFormKey.currentState!.validate()) {}
+              if (_createColocationFormKey.currentState!.validate()) {
+                showDialog(
+                  context: context,
+                  builder: (context) => const CreateColocationDialog(),
+                );
+              }
             },
           ),
         ],

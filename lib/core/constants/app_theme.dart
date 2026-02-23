@@ -37,6 +37,7 @@ class AppTheme {
     ),
     dialogTheme: DialogThemeData(
       backgroundColor: AppColor.white,
+      insetPadding: EdgeInsets.symmetric(horizontal: 20),
       shape: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),
         borderSide: BorderSide.none,
