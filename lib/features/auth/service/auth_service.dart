@@ -66,6 +66,7 @@ class AuthService {
         role: user.role,
         createdAt: DateTime.now(),
       );
+
       debugPrint('Saving user to Firestore: ${newUser.uid}');
       await _firestore
           .collection(Config.userCollection)
@@ -74,13 +75,10 @@ class AuthService {
       debugPrint('User saved successfully to Firestore');
       return Right(newUser);
     } on FirebaseAuthException catch (e) {
-      debugPrint('FirebaseAuthException: ${e.code} - ${e.message}');
       return Left(_handleAuthException(e));
     } on FirebaseException catch (e) {
-      debugPrint('FirebaseException: ${e.code} - ${e.message}');
       return Left('Database error: ${e.message}');
     } catch (e) {
-      debugPrint('Unknown error during registration: $e');
       return Left('An unknown error occurred during registration');
     }
   }

@@ -42,7 +42,7 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
   final ValueNotifier<bool> _isConfirmPasswordObscure = ValueNotifier<bool>(
     true,
   );
-  final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>(null);
+  final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>("Male");
   final ValueNotifier<String> _selectedRole = ValueNotifier<String>("Owner");
 
   @override
