@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_style.dart';
 import '../../../core/functions/show_toast.dart';
 import '../../../core/functions/valid_input.dart';
+import '../../../core/helper/cacher_helper.dart';
+import '../../../routes/routes.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/custom_dropdown.dart';
 import '../../../shared/forms/input.dart';
@@ -12,8 +15,10 @@ import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
 import '../models/user_model.dart';
+import '../providers/password_provider.dart';
 import '../view_models/auth_view_model.dart';
 import 'auth_obscure_button.dart';
+import 'password_strength_indicator.dart';
 
 class RegisterForm extends ConsumerStatefulWidget {
   const RegisterForm({super.key});
@@ -70,13 +75,24 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
     );
 
     if (success && mounted) {
-      // Navigate to home or main screen after successful login
-      // GoRouter.of(context).go(Routes.home);
+      onReset();
+      CacherHelper().setCompletProfile(true);
+      GoRouter.of(context).go(Routes.completProfile);
     } else if (mounted) {
       final errorMessage = ref.read(authViewModelProvider).errorMessage;
       showToast(context, errorMessage ?? "Registration failed", isError: true);
       debugPrint('Registration failed: $errorMessage');
     }
+  }
+
+  void onReset() {
+    _fullNameController.clear();
+    _emailController.clear();
+    _phoneNumberController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+    _selectedGender.value = null;
+    _selectedRole.value = "Owner";
   }
 
   @override
@@ -148,24 +164,38 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
           Label(label: "Password"),
           ValueListenableBuilder<bool>(
             valueListenable: _isPasswordObscure,
-            builder: (context, value, child) => Input(
-              hintText: "E.g: ********",
-              controller: _passwordController,
-              prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
-              obscureText: value,
-              suffixIcon: AuthObscureButton(
-                isObscure: value,
-                onPressed: () {
-                  _isPasswordObscure.value = !_isPasswordObscure.value;
-                },
-              ),
-              keyboardType: TextInputType.visiblePassword,
-              validator: (value) => validateInput(
-                value,
-                type: InputType.password,
-                min: 8,
-                max: 25,
-              ),
+            builder: (context, value, child) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Input(
+                  hintText: "E.g: ********",
+                  controller: _passwordController,
+                  prefixIcon: CustomPrefixIcon(icon: LucideIcons.lock),
+                  obscureText: value,
+                  suffixIcon: AuthObscureButton(
+                    isObscure: value,
+                    onPressed: () {
+                      _isPasswordObscure.value = !_isPasswordObscure.value;
+                    },
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  validator: (value) => validateInput(
+                    value,
+                    type: InputType.password,
+                    min: 8,
+                    max: 25,
+                  ),
+                  onChanged: (value) {
+                    ref.read(passwordTextProvider.notifier).state = value;
+                  },
+                ),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final password = ref.watch(passwordTextProvider);
+                    return PasswordStrengthIndicator(password: password);
+                  },
+                ),
+              ],
             ),
           ),
           VerticalSpacer(20),
@@ -185,12 +215,15 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
                 },
               ),
               keyboardType: TextInputType.visiblePassword,
-              validator: (value) => validateInput(
-                value,
-                type: InputType.password,
-                min: 8,
-                max: 25,
-              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please confirm your password';
+                }
+                if (value != _passwordController.text) {
+                  return 'Passwords do not match';
+                }
+                return null;
+              },
             ),
           ),
           VerticalSpacer(20),

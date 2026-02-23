@@ -9,3 +9,8 @@ final isOnboardingCompletedProvider = Provider<bool>((ref) {
   final cacheHelper = ref.watch(cacherHelperProvider);
   return cacheHelper.isOnboardingCompleted();
 });
+
+final isCompletProfileProvider = Provider<bool>((ref) {
+  final cacheHelper = ref.watch(cacherHelperProvider);
+  return cacheHelper.isCompletProfile();
+});

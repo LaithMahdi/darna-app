@@ -24,6 +24,13 @@ class MyApp extends StatelessWidget {
       routerConfig: Routes.router,
       debugShowCheckedModeBanner: Config.isDebugMode,
       theme: AppTheme.lightTheme,
+      builder: (context, child) {
+        final padding = MediaQuery.of(context).padding;
+        return Padding(
+          padding: EdgeInsets.only(bottom: padding.bottom),
+          child: child!,
+        );
+      },
     );
   }
 }

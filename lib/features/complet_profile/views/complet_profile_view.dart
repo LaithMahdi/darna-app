@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../core/constants/app_color.dart';
+import '../widgets/complet_profile_appbar.dart';
+import '../widgets/complet_profile_dialog.dart';
+import '../widgets/complet_profile_view_body.dart';
+
+class CompletProfileView extends StatelessWidget {
+  const CompletProfileView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: CompletProfileAppbar(),
+        backgroundColor: AppColor.primary,
+        toolbarHeight: 100,
+      ),
+      body: CompletProfileViewBody(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => CompletProfileDialog(),
+          );
+        },
+        child: const Icon(LucideIcons.arrowRight),
+      ),
+    );
+  }
+}
