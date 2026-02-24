@@ -6,7 +6,6 @@ List<BottomNavigationModel> bottomNavigationData = [
   BottomNavigationModel(
     title: "Home",
     icon: LucideIcons.house,
-    isSelected: true,
     view: Container(color: Colors.blue),
   ),
   BottomNavigationModel(
