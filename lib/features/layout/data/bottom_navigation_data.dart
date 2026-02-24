@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../models/bottom_navigation_model.dart';
+import '../views/settings_view.dart';
 
 List<BottomNavigationModel> bottomNavigationData = [
   BottomNavigationModel(
@@ -21,6 +22,6 @@ List<BottomNavigationModel> bottomNavigationData = [
   BottomNavigationModel(
     title: "Settings",
     icon: LucideIcons.settings,
-    view: Container(color: Colors.purple),
+    view: SettingsView(),
   ),
 ];

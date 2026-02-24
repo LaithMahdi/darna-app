@@ -7,6 +7,7 @@ class CustomFilledIconButton extends StatelessWidget {
     required this.icon,
     this.color,
     this.size,
+    this.radius,
     this.foregroundColor,
     required this.onPressed,
   });
@@ -15,6 +16,7 @@ class CustomFilledIconButton extends StatelessWidget {
   final Color? color;
   final double? size;
   final Color? foregroundColor;
+  final double? radius;
   final VoidCallback onPressed;
 
   @override
@@ -31,6 +33,11 @@ class CustomFilledIconButton extends StatelessWidget {
         foregroundColor: foregroundColor ?? AppColor.white,
         elevation: 0,
         shadowColor: Colors.transparent,
+        shape: radius == null
+            ? CircleBorder()
+            : RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(radius!),
+              ),
       ),
     );
   }
