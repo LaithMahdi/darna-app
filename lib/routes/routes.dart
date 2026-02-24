@@ -54,7 +54,7 @@ abstract class Routes {
         ),
         redirect: (context, state) {
           if (CacherHelper().isCompletProfile()) {
-            return createColocation;
+            return layout;
           }
           return null;
         },
