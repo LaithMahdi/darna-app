@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../core/constants/app_color.dart';
 import '../../../shared/buttons/copy_button.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/input.dart';
+import '../../../shared/icones/dialog_avatar.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/dialog_description.dart';
 import '../../../shared/text/dialog_title.dart';
@@ -28,13 +28,7 @@ class _CreateColocationDialogState extends State<CreateColocationDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Center(
-              child: Icon(
-                LucideIcons.badgeCheck,
-                size: 58,
-                color: AppColor.success,
-              ),
-            ),
+            Center(child: DialogAvatar(icon: LucideIcons.check)),
             VerticalSpacer(16),
             DialogTitle(title: "Colocation Created Successfully!"),
             DialogDescription(
