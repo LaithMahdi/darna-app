@@ -17,7 +17,9 @@ class ColocationView extends StatelessWidget {
       body: ListView.separated(
         padding: Config.defaultPadding,
         itemCount: 10,
-        itemBuilder: (context, index) => ColocationItem(),
+        itemBuilder: (context, index) => ColocationItem(
+          onTap: () => GoRouter.of(context).push(Routes.colocationDetail),
+        ),
         separatorBuilder: (context, index) => VerticalSpacer(15),
       ),
       floatingActionButton: FloatingActionButton(
