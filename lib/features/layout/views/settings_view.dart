@@ -39,8 +39,7 @@ class SettingsView extends StatelessWidget {
                   SettingsListTile(
                     title: "Manage Colocations",
                     icon: LucideIcons.bedSingle,
-                    onTap: () =>
-                        GoRouter.of(context).push(Routes.createColocation),
+                    onTap: () => GoRouter.of(context).push(Routes.colocation),
                   ),
                   SettingsListTile(
                     title: "Join Colocation",

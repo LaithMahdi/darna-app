@@ -4,6 +4,7 @@ import '../core/helper/cacher_helper.dart';
 import '../features/auth/views/forgot_password_view.dart';
 import '../features/auth/views/login_view.dart';
 import '../features/auth/views/register_view.dart';
+import '../features/colocation/views/colocation_view.dart';
 import '../features/colocation/views/create_colocation_view.dart';
 import '../features/complet_profile/views/complet_profile_view.dart';
 import '../features/layout/views/layout_view.dart';
@@ -19,6 +20,7 @@ abstract class Routes {
   static const String forgotPassword = '/forgot-password';
   static const String completProfile = '/complet-profile';
   static const String createColocation = '/create-colocation';
+  static const String colocation = '/colocation';
   static const String layout = '/layout';
   static const String settings = '/settings';
 
@@ -91,6 +93,14 @@ abstract class Routes {
           context: context,
           state: state,
           child: const CreateColocationView(),
+        ),
+      ),
+      GoRoute(
+        path: colocation,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const ColocationView(),
         ),
       ),
       GoRoute(
