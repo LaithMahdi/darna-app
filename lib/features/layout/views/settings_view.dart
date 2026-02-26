@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
+import '../../../core/helper/cacher_helper.dart';
 import '../../../routes/routes.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
@@ -84,7 +85,10 @@ class SettingsView extends StatelessWidget {
                 title: "Logout",
                 color: AppColor.error,
                 icon: LucideIcons.logOut,
-                onTap: () {},
+                onTap: () {
+                  CacherHelper().setCompletProfile(false);
+                  GoRouter.of(context).push(Routes.login);
+                },
               ),
             ),
           ),
