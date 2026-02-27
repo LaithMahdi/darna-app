@@ -4,6 +4,7 @@ import '../../../core/constants/app_color.dart';
 import '../../../core/constants/app_style.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
+import 'colocation_detail_add_member.dart';
 
 class ColocationDetailMemberCard extends StatelessWidget {
   const ColocationDetailMemberCard({super.key});
@@ -40,7 +41,12 @@ class ColocationDetailMemberCard extends StatelessWidget {
           ),
           CustomFilledIconButton(
             icon: LucideIcons.plus,
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => ColocationDetailAddMember(),
+              );
+            },
             color: AppColor.greyF0,
             foregroundColor: AppColor.grey9A,
           ),
