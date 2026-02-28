@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../core/constants/app_color.dart';
 import '../../../shared/buttons/copy_button.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/input.dart';
@@ -19,11 +20,14 @@ class _CreateColocationDialogState extends State<CreateColocationDialog> {
   final TextEditingController _codeController = TextEditingController(
     text: "ABCD1234",
   );
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: AppColor.whiteFB,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -42,7 +46,6 @@ class _CreateColocationDialogState extends State<CreateColocationDialog> {
               readOnly: true,
               suffixIcon: CopyButton(code: _codeController.text),
             ),
-
             VerticalSpacer(16),
             PrimaryButton(text: "Share Code", onPressed: () {}),
           ],

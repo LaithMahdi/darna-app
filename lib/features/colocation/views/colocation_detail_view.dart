@@ -7,7 +7,7 @@ import '../../../shared/text/sub_label.dart';
 import '../data/colocators_data.dart';
 import '../widgets/colocation_detail_item_card.dart';
 import '../widgets/colocation_detail_member_card.dart';
-import 'colocation_detail_list_item_card.dart';
+import '../widgets/colocation_detail_list_item_card.dart';
 
 class ColocationDetailView extends StatelessWidget {
   const ColocationDetailView({super.key});

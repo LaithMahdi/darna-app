@@ -5,19 +5,39 @@ import '../../../core/constants/app_style.dart';
 import '../../../core/functions/get_initials.dart';
 import '../../../shared/card/dismissible_card.dart';
 import '../../../shared/card/user_badge.dart';
+import '../../../shared/dialogs/confirmation_dialog.dart';
 import '../../../shared/icones/dialog_avatar.dart';
 import '../models/colocator_model.dart';
 
 class ColocationDetailListItemCard extends StatelessWidget {
-  const ColocationDetailListItemCard({super.key, required this.colocator});
+  const ColocationDetailListItemCard({
+    super.key,
+    required this.colocator,
+    this.onDismissed,
+  });
 
   final ColocatorModel colocator;
+  final VoidCallback? onDismissed;
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: ValueKey(colocator.fullName),
       background: DismissibleCard(),
+      confirmDismiss: (direction) async {
+        return await ConfirmationDialog.show(
+          context: context,
+          title: 'Remove Member',
+          description:
+              'Are you sure you want to remove ${colocator.fullName} from this colocation?',
+          icon: LucideIcons.userMinus,
+          confirmText: 'Remove',
+          cancelText: 'Cancel',
+        );
+      },
+      onDismissed: (direction) {
+        onDismissed?.call();
+      },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(

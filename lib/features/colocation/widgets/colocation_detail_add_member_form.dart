@@ -21,6 +21,13 @@ class _ColocationDetailAddMemberFormState
       GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
+
+  @override
+  dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
