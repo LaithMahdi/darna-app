@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/config.dart';
 import '../../../core/constants/app_color.dart';
-import '../../../core/constants/app_style.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../data/home_stat_data.dart';
+import '../widgets/home_stat_icon_card.dart';
 import '../widgets/settings_appbar_title.dart';
 
 class HomeView extends StatelessWidget {
@@ -38,33 +38,11 @@ class HomeView extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 15,
                 crossAxisSpacing: 4,
+                childAspectRatio: 140 / 68,
               ),
               itemBuilder: (context, index) {
                 final stat = homeStatsData[index];
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: AppColor.white,
-                    border: Border.all(color: AppColor.greyF9),
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            stat.title,
-                            style: AppStyle.styleRegular12.copyWith(
-                              color: AppColor.black21,
-                            ),
-                          ),
-                          Text(stat.value, style: AppStyle.styleBold22),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
+                return HomeStatIconCard(stat: stat);
               },
             ),
           ],

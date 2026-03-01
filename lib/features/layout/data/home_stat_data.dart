@@ -18,13 +18,13 @@ List<HomeStatModel> homeStatsData = [
   HomeStatModel(
     title: "Reminders",
     value: "4",
-    icon: LucideIcons.clock,
+    icon: LucideIcons.history,
     color: AppColor.primary,
   ),
   HomeStatModel(
     title: "Your Balance",
     value: "-25€",
-    icon: LucideIcons.clock,
+    icon: LucideIcons.circleDollarSign,
     color: AppColor.blue02,
   ),
 ];
