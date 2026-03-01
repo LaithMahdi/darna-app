@@ -11,6 +11,8 @@ class DialogAvatar extends StatelessWidget {
     this.backgroundColor,
     this.radius,
     this.iconSize,
+    this.borderRadius,
+    this.isCircle = true,
   });
 
   final IconData icon;
@@ -20,16 +22,33 @@ class DialogAvatar extends StatelessWidget {
   final Color? backgroundColor;
   final double? radius;
   final double? iconSize;
+  final BorderRadius? borderRadius;
+  final bool isCircle;
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor:
-          backgroundColor ?? AppColor.success.withValues(alpha: .2),
-      radius: radius ?? 35,
-      child: text != null
-          ? Text("$text", style: textStyle)
-          : Icon(icon, size: iconSize ?? 35, color: color ?? AppColor.success),
+    final size = (radius ?? 35) * 2;
+    final child = text != null
+        ? Text("$text", style: textStyle)
+        : Icon(icon, size: iconSize ?? 35, color: color ?? AppColor.success);
+
+    if (isCircle && borderRadius == null) {
+      return CircleAvatar(
+        backgroundColor:
+            backgroundColor ?? AppColor.success.withValues(alpha: .2),
+        radius: radius ?? 35,
+        child: child,
+      );
+    }
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: backgroundColor ?? AppColor.success.withValues(alpha: .2),
+        borderRadius: borderRadius ?? BorderRadius.circular(radius ?? 35),
+      ),
+      child: Center(child: child),
     );
   }
 }

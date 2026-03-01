@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../models/bottom_navigation_model.dart';
+import '../views/home_view.dart';
 import '../views/settings_view.dart';
 
 List<BottomNavigationModel> bottomNavigationData = [
   BottomNavigationModel(
     title: "Home",
     icon: LucideIcons.house,
-    view: Container(color: Colors.blue),
+    view: HomeView(),
   ),
   BottomNavigationModel(
     title: "Tasks",

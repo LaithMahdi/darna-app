@@ -16,4 +16,6 @@ abstract class AppColor {
   static const Color success = Color(0xFF12AE6B);
   static const Color orange = Colors.orange;
   static const Color gold = Color(0xffE8A302);
+  static const Color transparent = Colors.transparent;
+  static const Color blue02 = Color(0xff0221E8);
 }

@@ -8,6 +8,7 @@ import '../features/colocation/views/colocation_detail_view.dart';
 import '../features/colocation/views/colocation_view.dart';
 import '../features/colocation/views/create_colocation_view.dart';
 import '../features/complet_profile/views/complet_profile_view.dart';
+import '../features/layout/views/home_view.dart';
 import '../features/layout/views/layout_view.dart';
 import '../features/layout/views/settings_view.dart';
 import '../features/onboarding/views/onboarding_view.dart';
@@ -25,6 +26,7 @@ abstract class Routes {
   static const String colocationDetail = '/colocation-detail';
   static const String layout = '/layout';
   static const String settings = '/settings';
+  static const String home = '/home';
 
   static final router = GoRouter(
     initialLocation: splash,
@@ -127,6 +129,14 @@ abstract class Routes {
           context: context,
           state: state,
           child: const SettingsView(),
+        ),
+      ),
+      GoRoute(
+        path: home,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const HomeView(),
         ),
       ),
     ],
