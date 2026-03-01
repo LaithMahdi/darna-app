@@ -40,7 +40,7 @@ class HomeStatIconCard extends StatelessWidget {
             color: stat.color,
             backgroundColor: stat.color.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(7),
-            radius: 25,
+            radius: 22,
             iconSize: 25,
           ),
         ],

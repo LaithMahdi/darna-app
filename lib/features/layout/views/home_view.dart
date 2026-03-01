@@ -4,8 +4,8 @@ import '../../../core/config.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
-import '../data/home_stat_data.dart';
-import '../widgets/home_stat_icon_card.dart';
+import '../widgets/home_sliver_grid_view.dart';
+import '../widgets/home_title.dart';
 import '../widgets/settings_appbar_title.dart';
 
 class HomeView extends StatelessWidget {
@@ -32,19 +32,9 @@ class HomeView extends StatelessWidget {
         padding: Config.defaultPadding,
         child: CustomScrollView(
           slivers: [
-            SliverGrid.builder(
-              itemCount: homeStatsData.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 4,
-                childAspectRatio: 140 / 68,
-              ),
-              itemBuilder: (context, index) {
-                final stat = homeStatsData[index];
-                return HomeStatIconCard(stat: stat);
-              },
-            ),
+            HomeSliverGrid(),
+            SliverToBoxAdapter(child: VerticalSpacer(20)),
+            SliverToBoxAdapter(child: HomeTitle(text: "Upcoming Tasks")),
           ],
         ),
       ),
