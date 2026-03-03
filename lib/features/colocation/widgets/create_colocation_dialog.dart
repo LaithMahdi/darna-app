@@ -17,9 +17,7 @@ class CreateColocationDialog extends StatefulWidget {
 }
 
 class _CreateColocationDialogState extends State<CreateColocationDialog> {
-  final TextEditingController _codeController = TextEditingController(
-    text: "ABCD1234",
-  );
+  final TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
