@@ -27,6 +27,7 @@ abstract class Routes {
   static const String layout = '/layout';
   static const String settings = '/settings';
   static const String home = '/home';
+  //
 
   static final router = GoRouter(
     initialLocation: splash,
