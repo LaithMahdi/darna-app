@@ -7,15 +7,15 @@ import '../../../shared/text/sub_label.dart';
 import '../models/privacy_model.dart';
 import '../widgets/privacy_item_card.dart';
 
-class PrivacyView extends StatelessWidget {
-  const PrivacyView({super.key});
+class HelpAndSupportView extends StatelessWidget {
+  const HelpAndSupportView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: CustomBackButton(),
-        title: Text("Privacy & Data Protection"),
+        title: Text("Help & Support"),
       ),
       body: SingleChildScrollView(
         padding: Config.defaultPadding,
@@ -24,10 +24,10 @@ class PrivacyView extends StatelessWidget {
           children: [
             SubLabel(
               text:
-                  "Your privacy is important to us. This page explains how your information is collected, used, and protected within the application.",
+                  "Need assistance? Find answers to common questions or contact our support team.",
             ),
             FutureBuilder<List<PrivacyModel>>(
-              future: LoadDataFromJson().loadPrivacy(),
+              future: LoadDataFromJson().loadTermsAndConditions(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: LoadingIndicator(size: 25));

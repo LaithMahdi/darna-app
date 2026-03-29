@@ -65,7 +65,8 @@ class SettingsView extends StatelessWidget {
                   SettingsListTile(
                     title: "Help",
                     icon: LucideIcons.messageCircleQuestionMark,
-                    onTap: () {},
+                    onTap: () =>
+                        GoRouter.of(context).push(Routes.helpAndSupport),
                   ),
                   SettingsListTile(
                     title: "Privacy",
