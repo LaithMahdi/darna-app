@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../../core/config.dart';
 import '../../../shared/spacer/spacer.dart';
+import '../data/task_data.dart';
 import '../widgets/task_easy_time_section.dart';
+import '../widgets/task_item_card.dart';
 import '../widgets/task_status_section.dart';
 
 class TaskView extends StatelessWidget {
@@ -11,8 +14,7 @@ class TaskView extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
+          SliverToBoxAdapter(
             child: Column(
               children: [
                 VerticalSpacer(20),
@@ -20,6 +22,17 @@ class TaskView extends StatelessWidget {
                 VerticalSpacer(24),
                 TaskStatusSection(),
               ],
+            ),
+          ),
+          SliverFillRemaining(
+            child: ListView.separated(
+              padding: Config.defaultPadding,
+              itemCount: tasksData.length,
+              itemBuilder: (context, index) {
+                final task = tasksData[index];
+                return TaskItemCard(task: task);
+              },
+              separatorBuilder: (context, index) => VerticalSpacer(10),
             ),
           ),
         ],
