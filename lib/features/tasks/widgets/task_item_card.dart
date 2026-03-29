@@ -7,9 +7,10 @@ import '../models/task_model.dart';
 import 'task_status_button.dart';
 
 class TaskItemCard extends StatelessWidget {
-  const TaskItemCard({super.key, required this.task});
+  const TaskItemCard({super.key, required this.task, required this.onTap});
 
   final TaskModel task;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class TaskItemCard extends StatelessWidget {
                   ],
                 ),
               ),
-              TaskStatusButton(status: task.status),
+              TaskStatusButton(status: task.status, onTap: onTap),
             ],
           ),
           Row(

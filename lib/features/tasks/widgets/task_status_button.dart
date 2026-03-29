@@ -4,11 +4,14 @@ import '../../../core/constants/app_style.dart';
 import '../enums/status_enum.dart';
 
 class TaskStatusButton extends StatelessWidget {
-  const TaskStatusButton({super.key, required this.status});
+  const TaskStatusButton({
+    super.key,
+    required this.status,
+    required this.onTap,
+  });
 
   final StatusEnum status;
-
-  // enum StatusEnum { ToDo, InProgress, Completed }
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +27,19 @@ class TaskStatusButton extends StatelessWidget {
         ? AppColor.gold
         : AppColor.blueSky02;
 
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      decoration: BoxDecoration(
-        color: statusColor.withValues(alpha: .2),
-        borderRadius: BorderRadius.circular(34),
-      ),
-      child: Text(
-        statusLabel,
-        style: AppStyle.styleSemiBold11.copyWith(color: statusColor),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(34),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        decoration: BoxDecoration(
+          color: statusColor.withValues(alpha: .2),
+          borderRadius: BorderRadius.circular(34),
+        ),
+        child: Text(
+          statusLabel,
+          style: AppStyle.styleSemiBold11.copyWith(color: statusColor),
+        ),
       ),
     );
   }

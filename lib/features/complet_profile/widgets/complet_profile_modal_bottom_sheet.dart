@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/config.dart';
-import '../../../core/constants/app_style.dart';
 import '../../../shared/buttons/ghost_button.dart';
 import '../../../shared/buttons/media_source_button.dart';
-import '../../../shared/icones/custom_prefix_icon.dart';
+import '../../../shared/text/bottom_sheet_title.dart';
 
 class CompletProfileModalBottomSheet extends StatelessWidget {
   const CompletProfileModalBottomSheet({super.key});
@@ -16,17 +15,7 @@ class CompletProfileModalBottomSheet extends StatelessWidget {
       child: Column(
         spacing: 10,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Upload Photo", style: AppStyle.styleBold18),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: CustomPrefixIcon(icon: LucideIcons.x),
-              ),
-            ],
-          ),
-
+          BottomSheetTitle(title: "Upload Photo"),
           Expanded(
             child: Column(
               children: [

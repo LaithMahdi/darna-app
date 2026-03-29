@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../core/config.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../data/task_data.dart';
+import '../widgets/task_change_status_modal_bottom_sheet.dart';
 import '../widgets/task_easy_time_section.dart';
 import '../widgets/task_item_card.dart';
 import '../widgets/task_status_section.dart';
@@ -30,7 +31,19 @@ class TaskView extends StatelessWidget {
               itemCount: tasksData.length,
               itemBuilder: (context, index) {
                 final task = tasksData[index];
-                return TaskItemCard(task: task);
+                return TaskItemCard(
+                  task: task,
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.45,
+                      ),
+                      builder: (context) =>
+                          TaskChangeStatusModalBottomSheet(task: task),
+                    );
+                  },
+                );
               },
               separatorBuilder: (context, index) => VerticalSpacer(10),
             ),
