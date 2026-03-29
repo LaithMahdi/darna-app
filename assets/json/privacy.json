@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Information We Collect",
+    "description": "We collect basic account information such as your name, email address, profile photo, and colocation activity (tasks, expenses, messages)."
+  },
+  {
+    "title": "Data Sharing",
+    "description": "We do not share your personal information with third parties. Your data is only visible to members within your colocation."
+  },
+  {
+    "title": "Account Deletion",
+    "description": "You can request account deletion at any time from the Manage Account section."
+  },
+  {
+    "title": "Footer Note",
+    "description": "For any privacy concerns, please contact support."
+  }
+]

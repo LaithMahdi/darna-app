@@ -12,6 +12,7 @@ import '../features/layout/views/home_view.dart';
 import '../features/layout/views/layout_view.dart';
 import '../features/layout/views/settings_view.dart';
 import '../features/onboarding/views/onboarding_view.dart';
+import '../features/privacyAndTermsCondition/views/privacy_view.dart';
 import '../features/splash/splash_view.dart';
 
 abstract class Routes {
@@ -27,7 +28,7 @@ abstract class Routes {
   static const String layout = '/layout';
   static const String settings = '/settings';
   static const String home = '/home';
-  //
+  static const String privacy = '/privacy';
 
   static final router = GoRouter(
     initialLocation: splash,
@@ -138,6 +139,14 @@ abstract class Routes {
           context: context,
           state: state,
           child: const HomeView(),
+        ),
+      ),
+      GoRoute(
+        path: privacy,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const PrivacyView(),
         ),
       ),
     ],

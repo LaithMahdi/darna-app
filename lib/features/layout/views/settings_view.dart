@@ -70,7 +70,7 @@ class SettingsView extends StatelessWidget {
                   SettingsListTile(
                     title: "Privacy",
                     icon: LucideIcons.hatGlasses,
-                    onTap: () {},
+                    onTap: () => GoRouter.of(context).push(Routes.privacy),
                   ),
                 ],
               ),
