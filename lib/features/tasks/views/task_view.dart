@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../../shared/spacer/spacer.dart';
-import '../widgets/task_easy_time_section.dart' show TaskEasyTimeSection;
+import '../widgets/task_easy_time_section.dart';
+import '../widgets/task_status_section.dart';
 
 class TaskView extends StatelessWidget {
   const TaskView({super.key});
@@ -14,7 +14,12 @@ class TaskView extends StatelessWidget {
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
-              children: [VerticalSpacer(20), TaskEasyTimeSection()],
+              children: [
+                VerticalSpacer(20),
+                TaskEasyTimeSection(),
+                VerticalSpacer(24),
+                TaskStatusSection(),
+              ],
             ),
           ),
         ],
