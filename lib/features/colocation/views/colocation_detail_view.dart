@@ -55,7 +55,7 @@ class ColocationDetailView extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.fromLTRB(25, 10, 25, 25),
+        padding: Config.paddingBottom,
         child: PrimaryButton(text: "Save", onPressed: () {}),
       ),
     );

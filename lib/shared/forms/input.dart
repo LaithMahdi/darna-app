@@ -15,6 +15,7 @@ class Input extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.onChanged,
+    this.onTap,
   });
 
   final String hintText;
@@ -27,10 +28,12 @@ class Input extends StatelessWidget {
   final Widget? suffixIcon;
   final bool readOnly;
   final void Function(String)? onChanged;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: onTap,
       style: AppStyle.styleSemiBold14,
       controller: controller,
       keyboardType: keyboardType ?? TextInputType.text,

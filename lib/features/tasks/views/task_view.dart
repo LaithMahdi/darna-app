@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/config.dart';
+import '../../../core/constants/app_color.dart';
+import '../../../routes/routes.dart';
+import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../data/task_data.dart';
 import '../widgets/task_change_status_modal_bottom_sheet.dart';
@@ -49,6 +54,10 @@ class TaskView extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: CustomPrefixIcon(icon: LucideIcons.plus, color: AppColor.white),
+        onPressed: () => GoRouter.of(context).push(Routes.taskCreate),
       ),
     );
   }

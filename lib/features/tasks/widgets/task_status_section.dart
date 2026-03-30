@@ -7,12 +7,15 @@ class TaskStatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      spacing: 10,
-      children: List.generate(statusesData.length, (index) {
-        final status = statusesData[index];
-        return TaskStatusItemButton(status: status);
-      }),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: Row(
+        spacing: 10,
+        children: List.generate(statusesData.length, (index) {
+          final status = statusesData[index];
+          return TaskStatusItemButton(status: status);
+        }),
+      ),
     );
   }
 }
