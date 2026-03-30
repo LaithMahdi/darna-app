@@ -1,58 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../core/functions/format_date.dart';
 import '../../../core/functions/valid_input.dart';
-import '../../../core/helper/date_picker_helper.dart';
 import '../../../shared/forms/input.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
 
-class TaskCreateForm extends StatefulWidget {
-  const TaskCreateForm({super.key});
+class TaskCreateForm extends StatelessWidget {
+  const TaskCreateForm({
+    super.key,
+    required this.formKey,
+    required this.titleController,
+    required this.descriptionController,
+    required this.dateController,
+    required this.onTitleChanged,
+    required this.onDescriptionChanged,
+    required this.onDateTap,
+  });
 
-  @override
-  State<TaskCreateForm> createState() => _TaskCreateFormState();
-}
-
-class _TaskCreateFormState extends State<TaskCreateForm> {
-  final GlobalKey<FormState> _formTaskCreateKey = GlobalKey<FormState>();
-  final TextEditingController _title = TextEditingController();
-  final TextEditingController _description = TextEditingController();
-  final TextEditingController _date = TextEditingController();
-
-  @override
-  void initState() {
-    _date.text = FormatDate.formatToDayMonthYear(DateTime.now());
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _title.dispose();
-    _description.dispose();
-    _date.dispose();
-    super.dispose();
-  }
+  final GlobalKey<FormState> formKey;
+  final TextEditingController titleController;
+  final TextEditingController descriptionController;
+  final TextEditingController dateController;
+  final ValueChanged<String> onTitleChanged;
+  final ValueChanged<String> onDescriptionChanged;
+  final VoidCallback onDateTap;
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formTaskCreateKey,
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Label(label: "Title"),
           Input(
             hintText: "e.g:Take out the trash",
-            controller: _title,
+            controller: titleController,
+            onChanged: onTitleChanged,
             validator: (value) => validateInput(value, min: 2, max: 100),
           ),
           VerticalSpacer(20),
           Label(label: "Description"),
           Input(
             hintText: "e.g: Make sure to take out the trash every week",
-            controller: _description,
+            controller: descriptionController,
+            onChanged: onDescriptionChanged,
             maxLines: 4,
             validator: (value) => validateInput(value, min: 10, max: 2000),
           ),
@@ -60,17 +53,9 @@ class _TaskCreateFormState extends State<TaskCreateForm> {
           Label(label: "Date"),
           Input(
             hintText: "e.g: 2023-10-10",
-            controller: _date,
+            controller: dateController,
             readOnly: true,
-            onTap: () async {
-              final selectedDate = await DatePickerHelper.showDatePickerDialog(
-                context,
-              );
-
-              if (selectedDate != null) {
-                _date.text = selectedDate;
-              }
-            },
+            onTap: onDateTap,
             prefixIcon: CustomPrefixIcon(icon: LucideIcons.calendar),
             validator: (value) => validateInput(value, min: 10, max: 16),
           ),
