@@ -21,6 +21,11 @@ abstract class AppStyle {
     fontWeight: FontWeight.w600,
   );
 
+  static TextStyle styleMedium18 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+  );
+
   static TextStyle styleBold16 = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.bold,

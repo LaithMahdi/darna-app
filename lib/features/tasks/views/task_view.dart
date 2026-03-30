@@ -37,7 +37,7 @@ class TaskView extends StatelessWidget {
                     showModalBottomSheet(
                       context: context,
                       constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height * 0.45,
+                        maxHeight: MediaQuery.of(context).size.height * 0.7,
                       ),
                       builder: (context) =>
                           TaskChangeStatusModalBottomSheet(task: task),
