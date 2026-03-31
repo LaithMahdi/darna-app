@@ -4,6 +4,9 @@ import '../../../core/config.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
+import '../../tasks/data/task_data.dart';
+import '../../tasks/widgets/task_item_card.dart';
+import '../widgets/home_history_card.dart';
 import '../widgets/home_sliver_grid_view.dart';
 import '../widgets/home_title.dart';
 import '../widgets/settings_appbar_title.dart';
@@ -35,6 +38,21 @@ class HomeView extends StatelessWidget {
             HomeSliverGrid(),
             SliverToBoxAdapter(child: VerticalSpacer(20)),
             SliverToBoxAdapter(child: HomeTitle(text: "Upcoming Tasks")),
+            SliverList.separated(
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                final task = tasksData[index];
+                return TaskItemCard(task: task, onTap: () {});
+              },
+              separatorBuilder: (context, index) => VerticalSpacer(10),
+            ),
+            SliverToBoxAdapter(child: VerticalSpacer(20)),
+            SliverToBoxAdapter(child: HomeTitle(text: "History")),
+            SliverList.separated(
+              itemCount: 2,
+              itemBuilder: (context, index) => const HomeHistoryCard(),
+              separatorBuilder: (context, index) => VerticalSpacer(10),
+            ),
           ],
         ),
       ),
