@@ -13,6 +13,9 @@ class PrimaryButton extends StatelessWidget {
     this.radius,
     this.width,
     this.isLoading = false,
+    this.height,
+    this.textStyle,
+    this.enableElevation = true,
   });
 
   final String text;
@@ -22,11 +25,15 @@ class PrimaryButton extends StatelessWidget {
   final double? radius;
   final double? width;
   final bool isLoading;
+  final double? height;
+  final TextStyle? textStyle;
+  final bool enableElevation;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width ?? double.infinity,
+      height: height,
       child: IgnorePointer(
         ignoring: isLoading,
         child: ElevatedButton(
@@ -41,7 +48,7 @@ class PrimaryButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(radius ?? 10),
             ),
             shadowColor: AppColor.primary,
-            elevation: isLoading ? 0 : 3,
+            elevation: isLoading ? 0 : (enableElevation ? 3 : 0),
           ),
           child: isLoading
               ? Row(
@@ -64,9 +71,11 @@ class PrimaryButton extends StatelessWidget {
                 )
               : Text(
                   text,
-                  style: AppStyle.styleSemiBold16.copyWith(
-                    color: foregroundColor ?? AppColor.white,
-                  ),
+                  style:
+                      textStyle ??
+                      AppStyle.styleSemiBold16.copyWith(
+                        color: foregroundColor ?? AppColor.white,
+                      ),
                 ),
         ),
       ),

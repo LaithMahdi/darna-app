@@ -1,3 +1,4 @@
+import 'package:darna/core/functions/show_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config.dart';
@@ -66,16 +67,12 @@ class _TaskCreateViewState extends ConsumerState<TaskCreateView> {
     if (!mounted) return;
 
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Task prepared successfully.')),
-      );
+      showToast(context, "Task created successfully!");
       return;
     }
 
     if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+      showToast(context, "Error in creating task", isError: true);
     }
   }
 
@@ -99,7 +96,6 @@ class _TaskCreateViewState extends ConsumerState<TaskCreateView> {
               text:
                   "Create a new task and assign it to one or more roommates. Stay organized and ensure responsibilities are clearly distributed.",
             ),
-            VerticalSpacer(24),
             TaskCreateForm(
               formKey: _formTaskCreateKey,
               titleController: _titleController,
