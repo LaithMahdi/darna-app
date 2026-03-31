@@ -25,12 +25,7 @@ class TaskCreateState {
       title: '',
       description: '',
       dueDate: FormatDate.formatToDayMonthYear(DateTime.now()),
-      availableUsers: const [
-        TaskUser(id: '1', name: 'Mahdi Bouzid', email: 'mahdi@darna.app'),
-        TaskUser(id: '2', name: 'Sara Ben Ali', email: 'sara@darna.app'),
-        TaskUser(id: '3', name: 'Youssef Trabelsi', email: 'youssef@darna.app'),
-        TaskUser(id: '4', name: 'Amira Gharbi', email: 'amira@darna.app'),
-      ],
+      availableUsers: const <TaskUser>[],
       selectedUserIds: const {},
       isSaving: false,
     );

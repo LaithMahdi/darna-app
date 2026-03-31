@@ -20,7 +20,9 @@ import '../features/onboarding/views/onboarding_view.dart';
 import '../features/privacyAndTermsCondition/views/help_and_support_view.dart';
 import '../features/privacyAndTermsCondition/views/privacy_view.dart';
 import '../features/splash/splash_view.dart';
+import '../features/tasks/models/task_model.dart';
 import '../features/tasks/views/task_create_view.dart';
+import '../features/tasks/views/task_detail_view.dart';
 import '../features/tasks/views/task_view.dart';
 
 abstract class Routes {
@@ -42,6 +44,7 @@ abstract class Routes {
   static const String helpAndSupport = '/help-support';
   static const String task = '/task';
   static const String taskCreate = '/task-create';
+  static const String taskDetail = '/task-detail';
   static const String chat = '/chat';
   static const String chatRoom = '/chat-room';
 
@@ -206,6 +209,16 @@ abstract class Routes {
           context: context,
           state: state,
           child: const TaskCreateView(),
+        ),
+      ),
+      GoRoute(
+        path: taskDetail,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: TaskDetailView(
+            task: state.extra is TaskModel ? state.extra! as TaskModel : null,
+          ),
         ),
       ),
       GoRoute(

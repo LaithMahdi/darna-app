@@ -1,14 +1,34 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../service/task_service.dart';
 import 'task_create_state.dart';
+import 'task_view_model.dart';
+import '../../../core/functions/format_date.dart';
 
 final taskCreateViewModelProvider =
     StateNotifierProvider<TaskCreateViewModel, TaskCreateState>((ref) {
-      return TaskCreateViewModel();
+      final service = ref.watch(taskServiceProvider);
+      return TaskCreateViewModel(service: service);
     });
 
 class TaskCreateViewModel extends StateNotifier<TaskCreateState> {
-  TaskCreateViewModel() : super(TaskCreateState.initial());
+  final TaskService service;
+
+  TaskCreateViewModel({required this.service})
+    : super(TaskCreateState.initial()) {
+    _loadTaskUsers();
+  }
+
+  Future<void> _loadTaskUsers() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final result = await service.fetchTaskUsers(currentUserId: user.uid);
+    result.fold((_) {}, (users) {
+      state = state.copyWith(availableUsers: users);
+    });
+  }
 
   void updateTitle(String value) {
     state = state.copyWith(title: value, errorMessage: null);
@@ -51,9 +71,47 @@ class TaskCreateViewModel extends StateNotifier<TaskCreateState> {
 
     state = state.copyWith(isSaving: true, errorMessage: null);
 
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      state = state.copyWith(
+        isSaving: false,
+        errorMessage: 'You must login first.',
+      );
+      return false;
+    }
 
-    state = state.copyWith(isSaving: false, errorMessage: null);
-    return true;
+    final selectedUsers = state.availableUsers
+        .where((member) => state.selectedUserIds.contains(member.id))
+        .toList(growable: false);
+
+    final result = await service.createTask(
+      title: state.title,
+      description: state.description,
+      dueDateText: state.dueDate,
+      selectedUsers: selectedUsers,
+      createdBy: user.uid,
+    );
+
+    return result.fold(
+      (error) {
+        state = state.copyWith(isSaving: false, errorMessage: error);
+        return false;
+      },
+      (_) {
+        state = state.copyWith(isSaving: false, errorMessage: null);
+        return true;
+      },
+    );
+  }
+
+  void resetForm() {
+    state = state.copyWith(
+      title: '',
+      description: '',
+      dueDate: FormatDate.formatToDayMonthYear(DateTime.now()),
+      selectedUserIds: <String>{},
+      isSaving: false,
+      errorMessage: null,
+    );
   }
 }

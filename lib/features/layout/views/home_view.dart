@@ -46,7 +46,11 @@ class HomeView extends StatelessWidget {
 
               itemBuilder: (context, index) {
                 final task = tasksData[index];
-                return TaskItemCard(task: task, onTap: () {});
+                return TaskItemCard(
+                  task: task,
+                  onCardTap: () {},
+                  onChangeStatusTap: () {},
+                );
               },
               separatorBuilder: (context, index) => VerticalSpacer(10),
             ),

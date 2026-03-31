@@ -1,7 +1,7 @@
-import 'package:darna/core/functions/show_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config.dart';
+import '../../../core/functions/show_toast.dart';
 import '../../../core/helper/date_picker_helper.dart';
 import '../../../shared/buttons/custom_back_button.dart';
 import '../../../shared/buttons/primary_button.dart';
@@ -67,8 +67,12 @@ class _TaskCreateViewState extends ConsumerState<TaskCreateView> {
     if (!mounted) return;
 
     if (success) {
+      notifier.resetForm();
+      _formTaskCreateKey.currentState?.reset();
+      _titleController.clear();
+      _descriptionController.clear();
+      _dateController.text = ref.read(taskCreateViewModelProvider).dueDate;
       showToast(context, "Task created successfully!");
-      return;
     }
 
     if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
