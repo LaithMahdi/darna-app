@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../core/config.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
@@ -31,30 +30,39 @@ class HomeView extends StatelessWidget {
         ],
         toolbarHeight: 100,
       ),
-      body: Padding(
-        padding: Config.defaultPadding,
-        child: CustomScrollView(
-          slivers: [
-            HomeSliverGrid(),
-            SliverToBoxAdapter(child: VerticalSpacer(20)),
-            SliverToBoxAdapter(child: HomeTitle(text: "Upcoming Tasks")),
-            SliverList.separated(
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: VerticalSpacer(15)),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            sliver: HomeSliverGrid(),
+          ),
+          SliverToBoxAdapter(child: VerticalSpacer(20)),
+          SliverToBoxAdapter(child: HomeTitle(text: "Upcoming Tasks")),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            sliver: SliverList.separated(
               itemCount: 2,
+
               itemBuilder: (context, index) {
                 final task = tasksData[index];
                 return TaskItemCard(task: task, onTap: () {});
               },
               separatorBuilder: (context, index) => VerticalSpacer(10),
             ),
-            SliverToBoxAdapter(child: VerticalSpacer(20)),
-            SliverToBoxAdapter(child: HomeTitle(text: "History")),
-            SliverList.separated(
+          ),
+          SliverToBoxAdapter(child: VerticalSpacer(20)),
+          SliverToBoxAdapter(child: HomeTitle(text: "History")),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            sliver: SliverList.separated(
               itemCount: 2,
               itemBuilder: (context, index) => const HomeHistoryCard(),
               separatorBuilder: (context, index) => VerticalSpacer(10),
             ),
-          ],
-        ),
+          ),
+          SliverToBoxAdapter(child: VerticalSpacer(40)),
+        ],
       ),
     );
   }

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../chat/views/chat_view.dart';
 import '../../tasks/views/task_view.dart';
 import '../models/bottom_navigation_model.dart';
 import '../views/home_view.dart';
@@ -19,7 +19,7 @@ List<BottomNavigationModel> bottomNavigationData = [
   BottomNavigationModel(
     title: "Messages",
     icon: LucideIcons.messageCircle,
-    view: Container(color: Colors.orange),
+    view: ChatView(),
   ),
   BottomNavigationModel(
     title: "Settings",

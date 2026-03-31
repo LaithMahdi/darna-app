@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../core/constants/app_style.dart';
 
 class HomeTitle extends StatelessWidget {
@@ -10,7 +9,7 @@ class HomeTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 9),
+      padding: const EdgeInsets.only(bottom: 9, left: 25),
       child: Text(text, style: AppStyle.styleBold16.copyWith(height: 2.7)),
     );
   }
