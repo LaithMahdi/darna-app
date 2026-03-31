@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../core/constants/app_style.dart';
+import '../../../routes/routes.dart';
 import '../../../shared/buttons/primary_button.dart';
 
 class CompletProfileDialog extends StatelessWidget {
@@ -25,7 +27,14 @@ class CompletProfileDialog extends StatelessWidget {
         'Your profile is now complete. You can start using the app and explore its features. Thank you for completing your profile!',
         style: AppStyle.styleMedium14.copyWith(color: AppColor.grey),
       ),
-      actions: [PrimaryButton(text: "Continue", onPressed: () {})],
+      actions: [
+        PrimaryButton(
+          text: "Continue",
+          onPressed: () {
+            GoRouter.of(context).replace(Routes.layout);
+          },
+        ),
+      ],
     );
   }
 }

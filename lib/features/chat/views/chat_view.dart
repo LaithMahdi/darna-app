@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/config.dart';
 import '../../../core/constants/app_style.dart';
+import '../../../routes/routes.dart';
 import '../../../shared/forms/input.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
@@ -46,7 +48,11 @@ class _ChatViewState extends State<ChatView> {
             padding: Config.defaultPadding,
             sliver: SliverList.separated(
               itemCount: 15,
-              itemBuilder: (context, index) => ChatCard(),
+              itemBuilder: (context, index) => ChatCard(
+                onTap: () {
+                  GoRouter.of(context).push(Routes.chatRoom);
+                },
+              ),
               separatorBuilder: (context, index) => VerticalSpacer(14),
             ),
           ),

@@ -4,6 +4,7 @@ import '../core/helper/cacher_helper.dart';
 import '../features/auth/views/forgot_password_view.dart';
 import '../features/auth/views/login_view.dart';
 import '../features/auth/views/register_view.dart';
+import '../features/chat/views/chat_room_view.dart';
 import '../features/chat/views/chat_view.dart';
 import '../features/colocation/views/colocation_detail_view.dart';
 import '../features/colocation/views/colocation_view.dart';
@@ -37,6 +38,7 @@ abstract class Routes {
   static const String task = '/task';
   static const String taskCreate = '/task-create';
   static const String chat = '/chat';
+  static const String chatRoom = '/chat-room';
 
   static final router = GoRouter(
     initialLocation: splash,
@@ -187,6 +189,14 @@ abstract class Routes {
           context: context,
           state: state,
           child: const ChatView(),
+        ),
+      ),
+      GoRoute(
+        path: chatRoom,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const ChatRoomView(),
         ),
       ),
     ],
