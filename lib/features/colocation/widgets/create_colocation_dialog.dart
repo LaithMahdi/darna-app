@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
+import '../../../core/functions/copy_and_share_colocation_invite.dart';
 import '../../../shared/buttons/copy_button.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/input.dart';
@@ -10,7 +11,14 @@ import '../../../shared/text/dialog_description.dart';
 import '../../../shared/text/dialog_title.dart';
 
 class CreateColocationDialog extends StatefulWidget {
-  const CreateColocationDialog({super.key});
+  const CreateColocationDialog({
+    super.key,
+    required this.inviteCode,
+    required this.colocationName,
+  });
+
+  final String inviteCode;
+  final String colocationName;
 
   @override
   State<CreateColocationDialog> createState() => _CreateColocationDialogState();
@@ -18,6 +26,18 @@ class CreateColocationDialog extends StatefulWidget {
 
 class _CreateColocationDialogState extends State<CreateColocationDialog> {
   final TextEditingController _codeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _codeController.text = widget.inviteCode;
+  }
+
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +62,20 @@ class _CreateColocationDialogState extends State<CreateColocationDialog> {
               hintText: "Colocation Code",
               controller: _codeController,
               readOnly: true,
-              suffixIcon: CopyButton(code: _codeController.text),
+              suffixIcon: CopyButton(
+                code: _codeController.text,
+                onPressed: () => copyAndShareColocationInvite(
+                  context: context,
+                  inviteCode: _codeController.text,
+                  colocationName: widget.colocationName,
+                ),
+              ),
             ),
             VerticalSpacer(16),
-            PrimaryButton(text: "Share Code", onPressed: () {}),
+            PrimaryButton(
+              text: "Done",
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ],
         ),
       ),

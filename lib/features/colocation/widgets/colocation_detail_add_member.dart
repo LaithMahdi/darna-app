@@ -8,18 +8,25 @@ import '../../../shared/text/dialog_title.dart';
 import 'colocation_detail_add_member_form.dart';
 
 class ColocationDetailAddMember extends StatelessWidget {
-  const ColocationDetailAddMember({super.key});
+  const ColocationDetailAddMember({
+    super.key,
+    required this.colocationId,
+    required this.colocationName,
+  });
+
+  final String colocationId;
+  final String colocationName;
 
   @override
   Widget build(BuildContext context) {
-    return const Dialog(
+    return Dialog(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            const Center(
               child: DialogAvatar(
                 icon: LucideIcons.plus,
                 color: AppColor.success,
@@ -27,14 +34,14 @@ class ColocationDetailAddMember extends StatelessWidget {
                 iconSize: 28,
               ),
             ),
-            VerticalSpacer(16),
-            Center(child: DialogTitle(title: "Add Member to Darna Apartment")),
-            DialogDescription(
+            const VerticalSpacer(16),
+            Center(child: DialogTitle(title: 'Add Member to $colocationName')),
+            const DialogDescription(
               description:
                   "Send the invitation code to your roommate. Once they enter it, they will automatically join this colocation.",
             ),
-            VerticalSpacer(16),
-            ColocationDetailAddMemberForm(),
+            const VerticalSpacer(16),
+            ColocationDetailAddMemberForm(colocationId: colocationId),
           ],
         ),
       ),

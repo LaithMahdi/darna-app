@@ -7,7 +7,16 @@ import '../../../shared/icones/custom_prefix_icon.dart';
 import 'colocation_detail_add_member.dart';
 
 class ColocationDetailMemberCard extends StatelessWidget {
-  const ColocationDetailMemberCard({super.key});
+  const ColocationDetailMemberCard({
+    super.key,
+    required this.membersCount,
+    required this.colocationId,
+    required this.colocationName,
+  });
+
+  final int membersCount;
+  final String? colocationId;
+  final String colocationName;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +40,7 @@ class ColocationDetailMemberCard extends StatelessWidget {
               children: [
                 Text("Members", style: AppStyle.styleSemiBold14),
                 Text(
-                  "4 colocataires",
+                  "$membersCount colocataires",
                   style: AppStyle.styleMedium12.copyWith(
                     color: AppColor.grey9A,
                   ),
@@ -42,9 +51,16 @@ class ColocationDetailMemberCard extends StatelessWidget {
           CustomFilledIconButton(
             icon: LucideIcons.plus,
             onPressed: () {
+              if (colocationId == null || colocationId!.isEmpty) {
+                return;
+              }
+
               showDialog(
                 context: context,
-                builder: (context) => ColocationDetailAddMember(),
+                builder: (context) => ColocationDetailAddMember(
+                  colocationId: colocationId!,
+                  colocationName: colocationName,
+                ),
               );
             },
             color: AppColor.greyF0,

@@ -5,9 +5,16 @@ import '../../../core/constants/app_style.dart';
 import '../../../shared/icones/dialog_avatar.dart';
 
 class ColocationItem extends StatelessWidget {
-  const ColocationItem({super.key, required this.onTap});
+  const ColocationItem({
+    super.key,
+    required this.onTap,
+    required this.name,
+    required this.membersCount,
+  });
 
   final VoidCallback onTap;
+  final String name;
+  final int membersCount;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +35,9 @@ class ColocationItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 2,
               children: [
-                Text("Darna Apartment", style: AppStyle.styleBold14),
+                Text(name, style: AppStyle.styleBold14),
                 Text(
-                  "5 members",
+                  "$membersCount members",
                   style: AppStyle.styleRegular14.copyWith(color: AppColor.grey),
                 ),
               ],

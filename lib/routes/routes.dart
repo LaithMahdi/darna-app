@@ -6,6 +6,7 @@ import '../features/auth/views/login_view.dart';
 import '../features/auth/views/register_view.dart';
 import '../features/chat/views/chat_room_view.dart';
 import '../features/chat/views/chat_view.dart';
+import '../features/colocation/models/colocation_model.dart';
 import '../features/colocation/views/colocation_detail_view.dart';
 import '../features/colocation/views/colocation_view.dart';
 import '../features/colocation/views/create_colocation_view.dart';
@@ -124,7 +125,11 @@ abstract class Routes {
         pageBuilder: (context, state) => _buildPageWithTransition(
           context: context,
           state: state,
-          child: const ColocationDetailView(),
+          child: ColocationDetailView(
+            colocation: state.extra is ColocationModel
+                ? state.extra! as ColocationModel
+                : null,
+          ),
         ),
       ),
       GoRoute(

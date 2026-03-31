@@ -6,7 +6,14 @@ import '../../../shared/buttons/copy_button.dart';
 import '../../../shared/icones/dialog_avatar.dart';
 
 class ColocationDetailItemCard extends StatelessWidget {
-  const ColocationDetailItemCard({super.key});
+  const ColocationDetailItemCard({
+    super.key,
+    required this.name,
+    required this.inviteCode,
+  });
+
+  final String name;
+  final String inviteCode;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +33,9 @@ class ColocationDetailItemCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 5,
               children: [
-                Text("Darna Apartment", style: AppStyle.styleSemiBold14),
+                Text(name, style: AppStyle.styleSemiBold14),
                 Text(
-                  "Code : 4555502",
+                  "Code : $inviteCode",
                   style: AppStyle.styleSemiBold12.copyWith(
                     color: AppColor.grey9A,
                   ),
@@ -36,7 +43,7 @@ class ColocationDetailItemCard extends StatelessWidget {
               ],
             ),
           ),
-          CopyButton(code: "4555502"),
+          CopyButton(code: inviteCode),
         ],
       ),
     );
