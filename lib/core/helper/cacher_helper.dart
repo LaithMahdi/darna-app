@@ -26,8 +26,12 @@ class CacherHelper {
   }
 
   // Clear data
-  Future<void> deleteData() async {}
+  Future<void> deleteData() async {
+    await _service.sharedPreferences.remove(_isCompletProfileKey);
+  }
 
   // Clear all app data
-  Future<void> clearAllData() async {}
+  Future<void> clearAllData() async {
+    await _service.sharedPreferences.clear();
+  }
 }

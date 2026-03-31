@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -102,6 +103,20 @@ class ColocationViewModel extends StateNotifier<ColocationState> {
     );
 
     return result.fold((error) => error, (_) => null);
+  }
+
+  Future<Either<String, ColocationModel>> joinColocationByInviteCode({
+    required String inviteCode,
+  }) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return const Left('You must login first.');
+    }
+
+    return _service.joinColocationByInviteCode(
+      inviteCode: inviteCode,
+      userId: currentUser.uid,
+    );
   }
 
   @override

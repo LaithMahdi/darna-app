@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
+import '../../../core/functions/show_toast.dart';
 import '../../../core/helper/cacher_helper.dart';
+import '../../../features/auth/view_models/auth_view_model.dart';
+import '../../../features/colocation/models/colocation_model.dart';
 import '../../../routes/routes.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
+import '../widgets/join_colocation_dialog.dart';
 import '../widgets/settings_appbar_title.dart';
 import '../widgets/settings_list_tile.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends ConsumerWidget {
   const SettingsView({super.key});
 
+  Future<void> _logout(BuildContext context, WidgetRef ref) async {
+    final success = await ref.read(authViewModelProvider.notifier).signOut();
+
+    if (!context.mounted) return;
+
+    if (!success) {
+      final error = ref.read(authViewModelProvider).errorMessage;
+      showToast(context, error ?? 'Logout failed.', isError: true);
+      return;
+    }
+
+    await CacherHelper().deleteData();
+
+    if (!context.mounted) return;
+    GoRouter.of(context).go(Routes.login);
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: SettingsAppbarTitle(),
@@ -45,17 +67,30 @@ class SettingsView extends StatelessWidget {
                   SettingsListTile(
                     title: "Join Colocation",
                     icon: LucideIcons.ticket,
-                    onTap: () {},
+                    onTap: () async {
+                      final joinedColocation =
+                          await showDialog<ColocationModel>(
+                            context: context,
+                            builder: (context) => const JoinColocationDialog(),
+                          );
+
+                      if (joinedColocation == null || !context.mounted) return;
+
+                      GoRouter.of(
+                        context,
+                      ).push(Routes.colocationDetail, extra: joinedColocation);
+                    },
                   ),
                   SettingsListTile(
                     title: "Manage Account",
                     icon: LucideIcons.wrench,
-                    onTap: () {},
+                    onTap: () =>
+                        GoRouter.of(context).push(Routes.manageAccount),
                   ),
                   SettingsListTile(
                     title: "Password",
                     icon: LucideIcons.keyRound,
-                    onTap: () {},
+                    onTap: () => GoRouter.of(context).push(Routes.password),
                   ),
                   SettingsListTile(
                     title: "Language",
@@ -86,10 +121,7 @@ class SettingsView extends StatelessWidget {
                 title: "Logout",
                 color: AppColor.error,
                 icon: LucideIcons.logOut,
-                onTap: () {
-                  CacherHelper().setCompletProfile(false);
-                  GoRouter.of(context).push(Routes.login);
-                },
+                onTap: () => _logout(context, ref),
               ),
             ),
           ),

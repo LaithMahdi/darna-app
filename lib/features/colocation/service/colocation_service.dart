@@ -113,6 +113,69 @@ class ColocationService {
     }
   }
 
+  Future<Either<String, ColocationModel>> joinColocationByInviteCode({
+    required String inviteCode,
+    required String userId,
+  }) async {
+    try {
+      final code = inviteCode.trim();
+      if (code.isEmpty) {
+        return const Left('Invite code is required.');
+      }
+
+      final query = await _firestore
+          .collection(Config.colocationsCollection)
+          .where('inviteCode', isEqualTo: code)
+          .limit(1)
+          .get();
+
+      if (query.docs.isEmpty) {
+        return const Left('Invalid invitation code.');
+      }
+
+      final colocationRef = query.docs.first.reference;
+
+      await _firestore.runTransaction((transaction) async {
+        final snapshot = await transaction.get(colocationRef);
+        if (!snapshot.exists) {
+          throw StateError('Colocation not found.');
+        }
+
+        final data = snapshot.data() ?? <String, dynamic>{};
+        final memberIds = List<String>.from(
+          data['memberIds'] ?? const <String>[],
+        );
+        final maxMembers = (data['maxMembers'] ?? 0) as int;
+
+        if (memberIds.contains(userId)) {
+          throw StateError('You are already a member of this colocation.');
+        }
+
+        if (maxMembers > 0 && memberIds.length >= maxMembers) {
+          throw StateError(
+            'This colocation reached the maximum members limit.',
+          );
+        }
+
+        memberIds.add(userId);
+        transaction.update(colocationRef, {
+          'memberIds': memberIds,
+          'membersCount': memberIds.length,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      });
+
+      final updatedDoc = await colocationRef.get();
+      return Right(ColocationModel.fromFirestore(updatedDoc));
+    } on StateError catch (e) {
+      return Left(e.message);
+    } on FirebaseException catch (e) {
+      return Left(e.message ?? 'Database error while joining colocation.');
+    } catch (_) {
+      return const Left('Unknown error while joining colocation.');
+    }
+  }
+
   Future<Either<String, void>> addMemberByEmail({
     required String colocationId,
     required String email,

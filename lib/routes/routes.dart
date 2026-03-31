@@ -13,6 +13,8 @@ import '../features/colocation/views/create_colocation_view.dart';
 import '../features/complet_profile/views/complet_profile_view.dart';
 import '../features/layout/views/home_view.dart';
 import '../features/layout/views/layout_view.dart';
+import '../features/layout/views/manage_account_view.dart';
+import '../features/layout/views/password_view.dart';
 import '../features/layout/views/settings_view.dart';
 import '../features/onboarding/views/onboarding_view.dart';
 import '../features/privacyAndTermsCondition/views/help_and_support_view.dart';
@@ -33,6 +35,8 @@ abstract class Routes {
   static const String colocationDetail = '/colocation-detail';
   static const String layout = '/layout';
   static const String settings = '/settings';
+  static const String manageAccount = '/manage-account';
+  static const String password = '/password';
   static const String home = '/home';
   static const String privacy = '/privacy';
   static const String helpAndSupport = '/help-support';
@@ -146,6 +150,22 @@ abstract class Routes {
           context: context,
           state: state,
           child: const SettingsView(),
+        ),
+      ),
+      GoRoute(
+        path: manageAccount,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const ManageAccountView(),
+        ),
+      ),
+      GoRoute(
+        path: password,
+        pageBuilder: (context, state) => _buildPageWithTransition(
+          context: context,
+          state: state,
+          child: const PasswordView(),
         ),
       ),
       GoRoute(

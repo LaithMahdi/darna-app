@@ -118,6 +118,22 @@ class AuthService {
     }
   }
 
+  // Sign out current user and clear auth session
+  Future<Either<String, void>> signOut() async {
+    try {
+      try {
+        await GoogleSignIn.instance.signOut();
+      } catch (_) {}
+
+      await _firebaseAuth.signOut();
+      return const Right(null);
+    } on FirebaseAuthException catch (e) {
+      return Left(_handleAuthException(e));
+    } catch (_) {
+      return const Left('Failed to logout. Please try again.');
+    }
+  }
+
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':

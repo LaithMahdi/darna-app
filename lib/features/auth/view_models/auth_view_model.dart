@@ -139,4 +139,20 @@ class AuthViewModel extends StateNotifier<AuthState> {
       },
     );
   }
+
+  Future<bool> signOut() async {
+    state = AuthState.loading();
+
+    final result = await _authService.signOut();
+    return result.fold(
+      (error) {
+        state = AuthState.error(error);
+        return false;
+      },
+      (_) {
+        state = AuthState.unauthenticated();
+        return true;
+      },
+    );
+  }
 }
