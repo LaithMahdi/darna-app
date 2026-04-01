@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
-import '../../tasks/data/task_data.dart';
-import '../../tasks/widgets/task_item_card.dart';
-import '../widgets/home_history_card.dart';
 import '../widgets/home_sliver_grid_view.dart';
-import '../widgets/home_title.dart';
 import '../widgets/settings_appbar_title.dart';
+import '../widgets/home_upcoming_tasks_section.dart';
+import '../widgets/home_history_section.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final userId = currentUser?.uid ?? '';
+
     return Scaffold(
       appBar: AppBar(
         title: SettingsAppbarTitle(),
@@ -35,35 +38,13 @@ class HomeView extends StatelessWidget {
           SliverToBoxAdapter(child: VerticalSpacer(15)),
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 25),
-            sliver: HomeSliverGrid(),
+            sliver: HomeSliverGrid(userId: userId),
           ),
           SliverToBoxAdapter(child: VerticalSpacer(20)),
-          SliverToBoxAdapter(child: HomeTitle(text: "Upcoming Tasks")),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            sliver: SliverList.separated(
-              itemCount: 2,
-
-              itemBuilder: (context, index) {
-                final task = tasksData[index];
-                return TaskItemCard(
-                  task: task,
-                  onCardTap: () {},
-                  onChangeStatusTap: () {},
-                );
-              },
-              separatorBuilder: (context, index) => VerticalSpacer(10),
-            ),
-          ),
+          SliverToBoxAdapter(child: HomeUpcomingTasksSection(userId: userId)),
           SliverToBoxAdapter(child: VerticalSpacer(20)),
-          SliverToBoxAdapter(child: HomeTitle(text: "History")),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
-            sliver: SliverList.separated(
-              itemCount: 2,
-              itemBuilder: (context, index) => const HomeHistoryCard(),
-              separatorBuilder: (context, index) => VerticalSpacer(10),
-            ),
+          SliverToBoxAdapter(
+            child: HomeHistorySection(userId: userId, onHistoryItemTap: () {}),
           ),
           SliverToBoxAdapter(child: VerticalSpacer(40)),
         ],

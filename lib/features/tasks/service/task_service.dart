@@ -19,8 +19,15 @@ class TaskService {
     ) {
       final tasks = snapshot.docs
           .map(TaskModel.fromFirestore)
+          .where((task) {
+            final isCreatedByUser = task.createdBy == userId;
+            final isAssignedToUser = task.assignedUserIds.contains(userId);
+            return isCreatedByUser || isAssignedToUser;
+          })
           .toList(growable: false);
-      log('watchTasksForUser: returning ${tasks.length} tasks for household');
+      log(
+        'watchTasksForUser: returning ${tasks.length} tasks for user=$userId',
+      );
       tasks.sort((a, b) {
         final aDate = a.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);
         final bDate = b.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);
@@ -35,7 +42,7 @@ class TaskService {
     required DateTime date,
   }) {
     final targetDate = DateTime(date.year, date.month, date.day);
-    log('watchTasksForUserByDate: targetDate=$targetDate');
+    log('watchTasksForUserByDate: userId=$userId, targetDate=$targetDate');
 
     return _firestore.collection(Config.tasksCollection).snapshots().map((
       snapshot,
@@ -44,6 +51,12 @@ class TaskService {
       final tasks = snapshot.docs
           .map(TaskModel.fromFirestore)
           .where((task) {
+            // Check if user created or assigned to this task
+            final isCreatedByUser = task.createdBy == userId;
+            final isAssignedToUser = task.assignedUserIds.contains(userId);
+            if (!isCreatedByUser && !isAssignedToUser) return false;
+
+            // Check if date matches
             if (task.dueDate == null) return false;
 
             final taskDate = DateTime(
@@ -52,7 +65,9 @@ class TaskService {
               task.dueDate!.day,
             );
             final matches = taskDate == targetDate;
-            log('watchTasksForUserByDate: task=${task.title}, match=$matches');
+            log(
+              'watchTasksForUserByDate: task=${task.title}, created=$isCreatedByUser, assigned=$isAssignedToUser, dateMatch=$matches',
+            );
             return matches;
           })
           .toList(growable: false);
