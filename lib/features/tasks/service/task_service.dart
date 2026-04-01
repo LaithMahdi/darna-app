@@ -1,7 +1,7 @@
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
-
 import '../../../core/config.dart';
 import '../enums/status_enum.dart';
 import '../models/task_model.dart';
@@ -19,12 +19,45 @@ class TaskService {
     ) {
       final tasks = snapshot.docs
           .map(TaskModel.fromFirestore)
-          .where(
-            (task) =>
-                task.createdBy == userId ||
-                task.assignedUserIds.contains(userId),
-          )
           .toList(growable: false);
+      log('watchTasksForUser: returning ${tasks.length} tasks for household');
+      tasks.sort((a, b) {
+        final aDate = a.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);
+        final bDate = b.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);
+        return aDate.compareTo(bDate);
+      });
+      return tasks;
+    });
+  }
+
+  Stream<List<TaskModel>> watchTasksForUserByDate({
+    required String userId,
+    required DateTime date,
+  }) {
+    final targetDate = DateTime(date.year, date.month, date.day);
+    log('watchTasksForUserByDate: targetDate=$targetDate');
+
+    return _firestore.collection(Config.tasksCollection).snapshots().map((
+      snapshot,
+    ) {
+      log('watchTasksForUserByDate: fetched ${snapshot.docs.length} tasks');
+      final tasks = snapshot.docs
+          .map(TaskModel.fromFirestore)
+          .where((task) {
+            if (task.dueDate == null) return false;
+
+            final taskDate = DateTime(
+              task.dueDate!.year,
+              task.dueDate!.month,
+              task.dueDate!.day,
+            );
+            final matches = taskDate == targetDate;
+            log('watchTasksForUserByDate: task=${task.title}, match=$matches');
+            return matches;
+          })
+          .toList(growable: false);
+
+      log('watchTasksForUserByDate: returning ${tasks.length} tasks');
       tasks.sort((a, b) {
         final aDate = a.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);
         final bDate = b.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);

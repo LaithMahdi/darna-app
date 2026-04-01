@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../enums/status_enum.dart';
 import '../models/task_model.dart';
 import '../service/task_service.dart';
@@ -16,7 +17,15 @@ final taskListProvider = StreamProvider<List<TaskModel>>((ref) {
   }
 
   final service = ref.watch(taskServiceProvider);
-  return service.watchTasksForUser(userId: user.uid);
+  final selectedDate = ref.watch(selectedTaskDateProvider);
+
+  log('taskListProvider: selectedDate=$selectedDate, userId=$user.uid');
+
+  if (selectedDate == null) {
+    return service.watchTasksForUser(userId: user.uid);
+  }
+
+  return service.watchTasksForUserByDate(userId: user.uid, date: selectedDate);
 });
 
 final selectedTaskDateProvider = StateProvider<DateTime?>((ref) {
@@ -28,25 +37,21 @@ final selectedTaskStatusProvider = StateProvider<StatusEnum?>((ref) => null);
 
 final filteredTaskListProvider = Provider<AsyncValue<List<TaskModel>>>((ref) {
   final tasksAsync = ref.watch(taskListProvider);
-  final selectedDate = ref.watch(selectedTaskDateProvider);
   final selectedStatus = ref.watch(selectedTaskStatusProvider);
 
-  return tasksAsync.whenData((tasks) {
+  final result = tasksAsync.whenData((tasks) {
+    log(
+      'filteredTaskListProvider: tasks=${tasks.length}, selectedStatus=$selectedStatus',
+    );
     return tasks
         .where((task) {
           final matchesStatus =
               selectedStatus == null || task.status == selectedStatus;
-
-          final dueDate = task.dueDate;
-          final matchesDate =
-              selectedDate == null ||
-              (dueDate != null &&
-                  dueDate.year == selectedDate.year &&
-                  dueDate.month == selectedDate.month &&
-                  dueDate.day == selectedDate.day);
-
-          return matchesStatus && matchesDate;
+          return matchesStatus;
         })
         .toList(growable: false);
   });
+
+  log('filteredTaskListProvider result: $result');
+  return result;
 });

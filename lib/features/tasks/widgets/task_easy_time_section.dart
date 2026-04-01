@@ -1,7 +1,7 @@
+import 'dart:developer';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../view_models/task_view_model.dart';
 import 'task_time_line.dart';
 import 'task_time_title.dart';
@@ -13,21 +13,20 @@ class TaskEasyTimeSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDate = ref.watch(selectedTaskDateProvider);
     final focusedDate = selectedDate ?? DateTime.now();
+    Duration duration = Duration(days: 30);
 
     return EasyDateTimeLinePicker.itemBuilder(
       focusedDate: focusedDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 30)),
+      firstDate: DateTime.now().subtract(duration),
+      lastDate: DateTime.now().add(duration),
       daySeparatorPadding: 10,
-      itemExtent: 64.0,
+      itemExtent: 75,
       itemBuilder: (context, date, isSelected, isDisabled, isToday, onTap) =>
           TaskTimeLine(date: date, isSelected: isSelected, onTap: onTap),
       onDateChange: (date) {
-        ref.read(selectedTaskDateProvider.notifier).state = DateTime(
-          date.year,
-          date.month,
-          date.day,
-        );
+        final normalizedDate = DateTime(date.year, date.month, date.day);
+        log('TaskEasyTimeSection: Date selected=$normalizedDate');
+        ref.read(selectedTaskDateProvider.notifier).state = normalizedDate;
       },
       timelineOptions: TimelineOptions(height: 90),
       headerOptions: HeaderOptions(
