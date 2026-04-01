@@ -6,6 +6,7 @@ import '../features/auth/views/login_view.dart';
 import '../features/auth/views/register_view.dart';
 import '../features/chat/views/chat_room_view.dart';
 import '../features/chat/views/chat_view.dart';
+import '../features/chat/models/chat_room_model.dart';
 import '../features/colocation/models/colocation_model.dart';
 import '../features/colocation/views/colocation_detail_view.dart';
 import '../features/colocation/views/colocation_view.dart';
@@ -233,11 +234,24 @@ abstract class Routes {
       ),
       GoRoute(
         path: chatRoom,
-        pageBuilder: (context, state) => _buildPageWithTransition(
-          context: context,
-          state: state,
-          child: const ChatRoomView(),
-        ),
+        pageBuilder: (context, state) {
+          final chatRoom = state.extra is ChatRoom
+              ? state.extra! as ChatRoom
+              : null;
+          if (chatRoom == null) {
+            // Redirect back if no ChatRoom is provided
+            return _buildPageWithTransition(
+              context: context,
+              state: state,
+              child: Scaffold(body: Center(child: Text('Chat room not found'))),
+            );
+          }
+          return _buildPageWithTransition(
+            context: context,
+            state: state,
+            child: ChatRoomView(chatRoom: chatRoom),
+          );
+        },
       ),
       GoRoute(
         path: notifications,

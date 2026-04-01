@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import '../models/chat_room_model.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../core/constants/app_style.dart';
 import '../../../shared/icones/dialog_avatar.dart';
 
 class ChatCard extends StatelessWidget {
-  const ChatCard({super.key, required this.onTap});
-
+  final ChatRoom chatRoom;
   final VoidCallback onTap;
+
+  const ChatCard({super.key, required this.chatRoom, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,8 @@ class ChatCard extends StatelessWidget {
           spacing: 10,
           children: [
             DialogAvatar(
-              icon: Icons.abc,
-              text: "LD",
+              icon: Icons.person,
+              text: _getInitials(chatRoom.name),
               radius: 24,
               backgroundColor: AppColor.primary.withValues(alpha: .2),
               textStyle: AppStyle.styleBold14.copyWith(color: AppColor.primary),
@@ -34,23 +36,74 @@ class ChatCard extends StatelessWidget {
                 spacing: 5,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Lucas Dubois", style: AppStyle.styleSemiBold12),
                   Text(
-                    "Je suis à la maison",
+                    chatRoom.name,
+                    style: AppStyle.styleSemiBold12,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    chatRoom.lastMessage,
                     style: AppStyle.styleMedium12.copyWith(
                       color: AppColor.grey9A,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            Text(
-              "10 min ago",
-              style: AppStyle.styleRegular12.copyWith(color: AppColor.grey9A),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              spacing: 5,
+              children: [
+                Text(
+                  _formatTime(chatRoom.lastMessageAt),
+                  style: AppStyle.styleRegular12.copyWith(
+                    color: AppColor.grey9A,
+                  ),
+                ),
+                if (chatRoom.unreadCount > 0)
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: AppColor.primary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '${chatRoom.unreadCount > 9 ? '9+' : chatRoom.unreadCount}',
+                      style: AppStyle.styleSemiBold11.copyWith(
+                        color: AppColor.white,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _getInitials(String name) {
+    final parts = name.split(' ');
+    if (parts.isEmpty) return 'U';
+    if (parts.length == 1) {
+      return parts[0].substring(0, 1).toUpperCase();
+    }
+    return '${parts[0].substring(0, 1)}${parts[1].substring(0, 1)}'
+        .toUpperCase();
+  }
+
+  String _formatTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inMinutes < 1) return 'just now';
+    if (difference.inMinutes < 60) return '${difference.inMinutes}m';
+    if (difference.inHours < 24) return '${difference.inHours}h';
+    if (difference.inDays == 1) return 'yesterday';
+    if (difference.inDays < 7) return '${difference.inDays}d';
+    return '${dateTime.month}/${dateTime.day}';
   }
 }
