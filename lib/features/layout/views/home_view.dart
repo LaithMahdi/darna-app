@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
+import '../../../routes/routes.dart';
 import '../../../shared/buttons/custom_filled_icon_button.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../widgets/home_sliver_grid_view.dart';
@@ -24,7 +26,9 @@ class HomeView extends ConsumerWidget {
         actions: [
           CustomFilledIconButton(
             icon: LucideIcons.bell,
-            onPressed: () {},
+            onPressed: () {
+              GoRouter.of(context).push(Routes.notifications);
+            },
             color: AppColor.greyF0,
             foregroundColor: AppColor.black,
             radius: 5,

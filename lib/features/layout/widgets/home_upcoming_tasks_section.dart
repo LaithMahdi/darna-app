@@ -44,21 +44,19 @@ class HomeUpcomingTasksSection extends ConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: tasks.isEmpty
                 ? HomeUpComingEmpty()
-                : Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: tasks.length,
-                      itemBuilder: (context, index) {
-                        final task = tasks[index];
-                        return TaskItemCard(
-                          task: task,
-                          onCardTap: () {},
-                          onChangeStatusTap: () {},
-                        );
-                      },
-                      separatorBuilder: (context, index) => VerticalSpacer(12),
-                    ),
+                : ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      final task = tasks[index];
+                      return TaskItemCard(
+                        task: task,
+                        onCardTap: () {},
+                        onChangeStatusTap: () {},
+                      );
+                    },
+                    separatorBuilder: (context, index) => VerticalSpacer(12),
                   ),
           ),
         ],

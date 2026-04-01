@@ -6,6 +6,7 @@ abstract class Config {
   static const String userCollection = 'users';
   static const String colocationsCollection = 'colocations';
   static const String tasksCollection = 'tasks';
+  static const String notificationsCollection = 'notifications';
   static bool isDebugMode = false;
   static EdgeInsets defaultPadding = const EdgeInsets.all(25);
   static EdgeInsets paddingBottom = EdgeInsets.fromLTRB(25, 10, 25, 25);
