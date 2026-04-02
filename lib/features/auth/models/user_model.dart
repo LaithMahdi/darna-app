@@ -10,7 +10,6 @@ abstract class UserModel with _$UserModel {
     String? fullName,
     String? phoneNumber,
     String? gender,
-    String? role,
     DateTime? createdAt,
   }) = _UserModel;
 

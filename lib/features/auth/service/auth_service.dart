@@ -63,7 +63,6 @@ class AuthService {
         fullName: user.fullName,
         phoneNumber: user.phoneNumber,
         gender: user.gender,
-        role: user.role,
         createdAt: DateTime.now(),
       );
 

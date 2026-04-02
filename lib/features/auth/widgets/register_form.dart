@@ -10,7 +10,6 @@ import '../../../routes/routes.dart';
 import '../../../shared/buttons/primary_button.dart';
 import '../../../shared/forms/custom_dropdown.dart';
 import '../../../shared/forms/input.dart';
-import '../../../shared/forms/role_selector.dart';
 import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
@@ -48,7 +47,6 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
     true,
   );
   final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>("Male");
-  final ValueNotifier<String> _selectedRole = ValueNotifier<String>("Owner");
 
   @override
   void dispose() {
@@ -68,7 +66,6 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
         email: _emailController.text,
         fullName: _fullNameController.text,
         phoneNumber: _phoneNumberController.text,
-        role: _selectedRole.value,
         gender: _selectedGender.value!,
       ),
       password: _passwordController.text,
@@ -92,7 +89,6 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
     _passwordController.clear();
     _confirmPasswordController.clear();
     _selectedGender.value = null;
-    _selectedRole.value = "Owner";
   }
 
   @override
@@ -102,16 +98,16 @@ class _RegisterFormState extends ConsumerState<RegisterForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ValueListenableBuilder<String?>(
-            valueListenable: _selectedRole,
-            builder: (context, value, child) => RoleSelector(
-              selectedRole: _selectedRole.value,
-              onRoleSelected: (role) {
-                _selectedRole.value = role;
-              },
-            ),
-          ),
-          VerticalSpacer(20),
+          // ValueListenableBuilder<String?>(
+          //   valueListenable: _selectedRole,
+          //   builder: (context, value, child) => RoleSelector(
+          //     selectedRole: _selectedRole.value,
+          //     onRoleSelected: (role) {
+          //       _selectedRole.value = role;
+          //     },
+          //   ),
+          // ),
+          // VerticalSpacer(20),
           Label(label: "Full Name"),
           Input(
             hintText: "E.g: John Doe",
