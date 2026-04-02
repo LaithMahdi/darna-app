@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/functions/format_date.dart';
 import '../models/chat_room_model.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../core/constants/app_style.dart';
@@ -58,7 +59,7 @@ class ChatCard extends StatelessWidget {
               spacing: 5,
               children: [
                 Text(
-                  _formatTime(chatRoom.lastMessageAt),
+                  FormatDate.formatTimeAgo(chatRoom.lastMessageAt),
                   style: AppStyle.styleRegular12.copyWith(
                     color: AppColor.grey9A,
                   ),
@@ -93,17 +94,5 @@ class ChatCard extends StatelessWidget {
     }
     return '${parts[0].substring(0, 1)}${parts[1].substring(0, 1)}'
         .toUpperCase();
-  }
-
-  String _formatTime(DateTime dateTime) {
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
-
-    if (difference.inMinutes < 1) return 'just now';
-    if (difference.inMinutes < 60) return '${difference.inMinutes}m';
-    if (difference.inHours < 24) return '${difference.inHours}h';
-    if (difference.inDays == 1) return 'yesterday';
-    if (difference.inDays < 7) return '${difference.inDays}d';
-    return '${dateTime.month}/${dateTime.day}';
   }
 }

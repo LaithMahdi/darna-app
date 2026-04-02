@@ -6,16 +6,16 @@ import '../../../shared/icones/custom_prefix_icon.dart';
 import '../../../shared/spacer/spacer.dart';
 
 class ChatEmptyState extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData? icon;
-
   const ChatEmptyState({
     super.key,
     this.title = 'No messages yet',
     this.subtitle = 'Start a conversation',
     this.icon = LucideIcons.messageCircle,
   });
+
+  final String title;
+  final String subtitle;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {

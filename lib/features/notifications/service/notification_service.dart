@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../core/config.dart';
 import '../models/notification_model.dart';
@@ -22,9 +21,6 @@ class NotificationService {
           final notifications = snapshot.docs
               .map(NotificationModel.fromFirestore)
               .toList(growable: false);
-          log(
-            'watchUserNotifications: fetched ${notifications.length} notifications',
-          );
           return notifications;
         });
   }
@@ -43,9 +39,6 @@ class NotificationService {
           final notifications = snapshot.docs
               .map(NotificationModel.fromFirestore)
               .toList(growable: false);
-          log(
-            'watchUnreadNotifications: fetched ${notifications.length} unread',
-          );
           return notifications;
         });
   }
@@ -64,9 +57,7 @@ class NotificationService {
           .collection(Config.notificationsCollection)
           .doc(notificationId)
           .update({'isRead': true, 'readAt': DateTime.now()});
-      log('markAsRead: notification $notificationId marked as read');
     } catch (e) {
-      log('markAsRead error: $e');
       rethrow;
     }
   }
@@ -86,9 +77,7 @@ class NotificationService {
       }
 
       await batch.commit();
-      log('markAllAsRead: marked ${docs.docs.length} notifications as read');
     } catch (e) {
-      log('markAllAsRead error: $e');
       rethrow;
     }
   }
@@ -100,9 +89,7 @@ class NotificationService {
           .collection(Config.notificationsCollection)
           .doc(notificationId)
           .delete();
-      log('deleteNotification: notification $notificationId deleted');
     } catch (e) {
-      log('deleteNotification error: $e');
       rethrow;
     }
   }
@@ -121,9 +108,7 @@ class NotificationService {
       }
 
       await batch.commit();
-      log('deleteAllNotifications: deleted ${docs.docs.length} notifications');
     } catch (e) {
-      log('deleteAllNotifications error: $e');
       rethrow;
     }
   }
@@ -149,10 +134,8 @@ class NotificationService {
             'readAt': null,
             'metadata': metadata,
           });
-      log('createNotification: created notification ${docRef.id}');
       return docRef.id;
     } catch (e) {
-      log('createNotification error: $e');
       rethrow;
     }
   }

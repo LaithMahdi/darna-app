@@ -25,9 +25,7 @@ class TaskService {
             return isCreatedByUser || isAssignedToUser;
           })
           .toList(growable: false);
-      log(
-        'watchTasksForUser: returning ${tasks.length} tasks for user=$userId',
-      );
+
       tasks.sort((a, b) {
         final aDate = a.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);
         final bDate = b.dueDate ?? DateTime.fromMillisecondsSinceEpoch(0);
@@ -42,12 +40,9 @@ class TaskService {
     required DateTime date,
   }) {
     final targetDate = DateTime(date.year, date.month, date.day);
-    log('watchTasksForUserByDate: userId=$userId, targetDate=$targetDate');
-
     return _firestore.collection(Config.tasksCollection).snapshots().map((
       snapshot,
     ) {
-      log('watchTasksForUserByDate: fetched ${snapshot.docs.length} tasks');
       final tasks = snapshot.docs
           .map(TaskModel.fromFirestore)
           .where((task) {
@@ -65,9 +60,6 @@ class TaskService {
               task.dueDate!.day,
             );
             final matches = taskDate == targetDate;
-            log(
-              'watchTasksForUserByDate: task=${task.title}, created=$isCreatedByUser, assigned=$isAssignedToUser, dateMatch=$matches',
-            );
             return matches;
           })
           .toList(growable: false);

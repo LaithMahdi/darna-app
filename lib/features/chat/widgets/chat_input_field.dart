@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../shared/loading/loading_indicator.dart';
 import '../view_models/chat_view_model.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../shared/forms/input.dart';
 import '../../../shared/spacer/spacer.dart';
 
-class ChatInputField extends ConsumerStatefulWidget {
-  final String roomId;
-  final AsyncValue<void> sendingState;
-  final Function(String) onSend;
-
-  const ChatInputField({
+class ChatRoomInputField extends ConsumerStatefulWidget {
+  const ChatRoomInputField({
     super.key,
     required this.roomId,
     required this.sendingState,
     required this.onSend,
   });
 
+  final String roomId;
+  final AsyncValue<void> sendingState;
+  final Function(String) onSend;
+
   @override
-  ConsumerState<ChatInputField> createState() => _ChatInputFieldState();
+  ConsumerState<ChatRoomInputField> createState() => _ChatRoomInputFieldState();
 }
 
-class _ChatInputFieldState extends ConsumerState<ChatInputField> {
+class _ChatRoomInputFieldState extends ConsumerState<ChatRoomInputField> {
   late TextEditingController _controller;
 
   @override
@@ -75,26 +76,18 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
             builder: (context, value, child) {
               final message = value.text.trim();
               final canSend = !isLoading && message.isNotEmpty;
-
               return GestureDetector(
                 onTap: canSend ? () => widget.onSend(message) : null,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: canSend ? AppColor.primary : AppColor.grey9A,
+                    color: canSend
+                        ? AppColor.primary
+                        : AppColor.grey.withValues(alpha: .4),
                     shape: BoxShape.circle,
                   ),
                   padding: EdgeInsets.all(8),
                   child: isLoading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColor.white,
-                            ),
-                          ),
-                        )
+                      ? LoadingIndicator(size: 20)
                       : Icon(LucideIcons.send, color: AppColor.white, size: 20),
                 ),
               );

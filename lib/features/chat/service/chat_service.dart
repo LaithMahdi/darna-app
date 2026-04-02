@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/config.dart';
 import '../models/chat_message_model.dart';
@@ -24,7 +25,7 @@ class ChatService {
               .toList();
         })
         .handleError((error) {
-          debugLog('watchUserChatRooms error: $error');
+          debugPrint('watchUserChatRooms error: $error');
           return [];
         });
   }
@@ -42,7 +43,7 @@ class ChatService {
       if (query.docs.isEmpty) return null;
       return ChatRoom.fromFirestore(query.docs.first);
     } catch (error) {
-      debugLog('getColocationChatRoom error: $error');
+      debugPrint('getColocationChatRoom error: $error');
       return null;
     }
   }
@@ -89,10 +90,10 @@ class ChatService {
       );
 
       await newRoomRef.set(newRoom.toJson());
-      debugLog('Created new individual chat room: ${newRoom.id}');
+      debugPrint('Created new individual chat room: ${newRoom.id}');
       return newRoom;
     } catch (error) {
-      debugLog('getOrCreateIndividualRoom error: $error');
+      debugPrint('getOrCreateIndividualRoom error: $error');
       rethrow;
     }
   }
@@ -132,14 +133,14 @@ class ChatService {
               .doc(existing.id)
               .update(updates);
 
-          debugLog('Updated colocation chat room members: $colocationId');
+          debugPrint('Updated colocation chat room members: $colocationId');
           return existing.copyWith(
             participants: mergedParticipants,
             name: colocationName,
           );
         }
 
-        debugLog('Colocation chat room already exists: $colocationId');
+        debugPrint('Colocation chat room already exists: $colocationId');
         return existing;
       }
 
@@ -151,7 +152,7 @@ class ChatService {
       );
       return newRoom;
     } catch (error) {
-      debugLog('ensureColocationChatRoom error: $error');
+      debugPrint('ensureColocationChatRoom error: $error');
       rethrow;
     }
   }
@@ -177,9 +178,9 @@ class ChatService {
           participants,
         );
       }
-      debugLog('Ensured all colocation chat rooms for user: $userId');
+      debugPrint('Ensured all colocation chat rooms for user: $userId');
     } catch (error) {
-      debugLog('ensureUserColocationChatRooms error: $error');
+      debugPrint('ensureUserColocationChatRooms error: $error');
       rethrow;
     }
   }
@@ -210,10 +211,10 @@ class ChatService {
       );
 
       await newRoomRef.set(newRoom.toJson());
-      debugLog('Created colocation chat room: ${newRoom.id}');
+      debugPrint('Created colocation chat room: ${newRoom.id}');
       return newRoom;
     } catch (error) {
-      debugLog('createColocationChatRoom error: $error');
+      debugPrint('createColocationChatRoom error: $error');
       rethrow;
     }
   }
@@ -234,7 +235,7 @@ class ChatService {
               .toList();
         })
         .handleError((error) {
-          debugLog('watchRoomMessages error: $error');
+          debugPrint('watchRoomMessages error: $error');
           return [];
         });
   }
@@ -279,9 +280,9 @@ class ChatService {
             'lastMessageAt': Timestamp.fromDate(DateTime.now()),
           });
 
-      debugLog('Message sent to room: $roomId');
+      debugPrint('Message sent to room: $roomId');
     } catch (error) {
-      debugLog('sendMessage error: $error');
+      debugPrint('sendMessage error: $error');
       rethrow;
     }
   }
@@ -304,9 +305,9 @@ class ChatService {
             'editedAt': Timestamp.fromDate(DateTime.now()),
           });
 
-      debugLog('Message edited: $messageId');
+      debugPrint('Message edited: $messageId');
     } catch (error) {
-      debugLog('editMessage error: $error');
+      debugPrint('editMessage error: $error');
       rethrow;
     }
   }
@@ -324,19 +325,10 @@ class ChatService {
           .doc(messageId)
           .delete();
 
-      debugLog('Message deleted: $messageId');
+      debugPrint('Message deleted: $messageId');
     } catch (error) {
-      debugLog('deleteMessage error: $error');
+      debugPrint('deleteMessage error: $error');
       rethrow;
-    }
-  }
-
-  // ==================== HELPER METHODS ====================
-
-  void debugLog(String message) {
-    if (Config.isDebugMode) {
-      // ignore: avoid_print
-      print('[ChatService] $message');
     }
   }
 }
