@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../models/colocation_model.dart';
 import '../service/colocation_service.dart';
 import 'colocation_state.dart';

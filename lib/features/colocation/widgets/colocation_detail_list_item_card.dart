@@ -74,7 +74,7 @@ class ColocationDetailListItemCard extends StatelessWidget {
       key: ValueKey(colocator.userId),
       background: DismissibleCard(),
       confirmDismiss: (direction) async {
-        final confirmed = await ConfirmationDialog.show(
+        await ConfirmationDialog.show(
           context: context,
           title: 'Remove Member',
           description:
@@ -83,8 +83,6 @@ class ColocationDetailListItemCard extends StatelessWidget {
           confirmText: 'Remove',
           cancelText: 'Cancel',
         );
-
-        // if (!confirmed) return false;
         if (onConfirmRemove == null) return false;
         return onConfirmRemove!.call();
       },
