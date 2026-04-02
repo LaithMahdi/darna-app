@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import '../../notifications/models/notification_model.dart';
+import '../../notifications/service/notification_service.dart';
 import '../../../core/config.dart';
 import '../../../core/functions/format_date.dart';
 import '../models/colocation_model.dart';
@@ -69,6 +71,7 @@ class ColocationService {
                 : DateTime.now();
 
             return ColocatorModel(
+              userId: doc.id,
               fullName: fullName.isNotEmpty ? fullName : email,
               email: email,
               isAdmin: col.createdBy == doc.id,
@@ -241,6 +244,69 @@ class ColocationService {
       return Left(e.message ?? 'Database error while adding member.');
     } catch (_) {
       return const Left('Unknown error while adding member.');
+    }
+  }
+
+  Future<Either<String, void>> removeMember({
+    required String colocationId,
+    required String adminUserId,
+    required String memberUserId,
+  }) async {
+    try {
+      final colocationRef = _firestore
+          .collection(Config.colocationsCollection)
+          .doc(colocationId);
+
+      late String colocationName;
+
+      await _firestore.runTransaction((transaction) async {
+        final colocationSnapshot = await transaction.get(colocationRef);
+        if (!colocationSnapshot.exists) {
+          throw StateError('Colocation not found.');
+        }
+
+        final data = colocationSnapshot.data() ?? <String, dynamic>{};
+        final createdBy = (data['createdBy'] ?? '') as String;
+        final memberIds = List<String>.from(
+          data['memberIds'] ?? const <String>[],
+        );
+        colocationName = (data['name'] ?? 'your colocation') as String;
+
+        if (createdBy != adminUserId) {
+          throw StateError('Only admin can remove members.');
+        }
+
+        if (memberUserId == createdBy) {
+          throw StateError('Admin cannot remove themselves.');
+        }
+
+        if (!memberIds.contains(memberUserId)) {
+          throw StateError('Member is not part of this colocation.');
+        }
+
+        memberIds.remove(memberUserId);
+        transaction.update(colocationRef, {
+          'memberIds': memberIds,
+          'membersCount': memberIds.length,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      });
+
+      await NotificationService().createNotification(
+        userId: memberUserId,
+        title: 'Removed from colocation',
+        message: 'You were removed from $colocationName.',
+        type: NotificationType.system,
+        metadata: {'colocationId': colocationId, 'removedBy': adminUserId},
+      );
+
+      return const Right(null);
+    } on StateError catch (e) {
+      return Left(e.message);
+    } on FirebaseException catch (e) {
+      return Left(e.message ?? 'Database error while removing member.');
+    } catch (_) {
+      return const Left('Unknown error while removing member.');
     }
   }
 

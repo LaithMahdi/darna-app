@@ -119,6 +119,24 @@ class ColocationViewModel extends StateNotifier<ColocationState> {
     );
   }
 
+  Future<String?> removeMember({
+    required String colocationId,
+    required String memberUserId,
+  }) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return 'You must login first.';
+    }
+
+    final result = await _service.removeMember(
+      colocationId: colocationId,
+      adminUserId: currentUser.uid,
+      memberUserId: memberUserId,
+    );
+
+    return result.fold((error) => error, (_) => null);
+  }
+
   @override
   void dispose() {
     _subscription?.cancel();

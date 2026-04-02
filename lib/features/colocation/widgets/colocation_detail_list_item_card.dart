@@ -13,19 +13,68 @@ class ColocationDetailListItemCard extends StatelessWidget {
   const ColocationDetailListItemCard({
     super.key,
     required this.colocator,
-    this.onDismissed,
+    this.canRemove = false,
+    this.onConfirmRemove,
   });
 
   final ColocatorModel colocator;
-  final VoidCallback? onDismissed;
+  final bool canRemove;
+  final Future<bool> Function()? onConfirmRemove;
+
+  Widget _buildContent() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      decoration: BoxDecoration(
+        color: AppColor.whiteFB,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Row(
+        spacing: 10,
+        children: [
+          DialogAvatar(
+            icon: LucideIcons.aLargeSmall,
+            text: getInitials(colocator.fullName),
+            textStyle: AppStyle.styleBold12.copyWith(color: AppColor.primary),
+            backgroundColor: AppColor.primary.withValues(alpha: .2),
+            radius: 25,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 3,
+            children: [
+              Row(
+                spacing: 9,
+                children: [
+                  Text(colocator.fullName, style: AppStyle.styleSemiBold13),
+                  UserBadge(isAdmin: colocator.isAdmin),
+                ],
+              ),
+              Text(
+                colocator.email,
+                style: AppStyle.styleMedium12.copyWith(color: AppColor.grey9A),
+              ),
+              Text(
+                "Membre depuis le ${colocator.joinAt}",
+                style: AppStyle.styleMedium12.copyWith(color: AppColor.grey9A),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (!canRemove) {
+      return _buildContent();
+    }
+
     return Dismissible(
-      key: ValueKey(colocator.fullName),
+      key: ValueKey(colocator.userId),
       background: DismissibleCard(),
       confirmDismiss: (direction) async {
-        return await ConfirmationDialog.show(
+        final confirmed = await ConfirmationDialog.show(
           context: context,
           title: 'Remove Member',
           description:
@@ -34,54 +83,12 @@ class ColocationDetailListItemCard extends StatelessWidget {
           confirmText: 'Remove',
           cancelText: 'Cancel',
         );
+
+        // if (!confirmed) return false;
+        if (onConfirmRemove == null) return false;
+        return onConfirmRemove!.call();
       },
-      onDismissed: (direction) {
-        onDismissed?.call();
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: BoxDecoration(
-          color: AppColor.whiteFB,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Row(
-          spacing: 10,
-          children: [
-            DialogAvatar(
-              icon: LucideIcons.aLargeSmall,
-              text: getInitials(colocator.fullName),
-              textStyle: AppStyle.styleBold12.copyWith(color: AppColor.primary),
-              backgroundColor: AppColor.primary.withValues(alpha: .2),
-              radius: 25,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 3,
-              children: [
-                Row(
-                  spacing: 9,
-                  children: [
-                    Text(colocator.fullName, style: AppStyle.styleSemiBold13),
-                    UserBadge(isAdmin: colocator.isAdmin),
-                  ],
-                ),
-                Text(
-                  colocator.email,
-                  style: AppStyle.styleMedium12.copyWith(
-                    color: AppColor.grey9A,
-                  ),
-                ),
-                Text(
-                  "Membre depuis le ${colocator.joinAt}",
-                  style: AppStyle.styleMedium12.copyWith(
-                    color: AppColor.grey9A,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+      child: _buildContent(),
     );
   }
 }

@@ -7,6 +7,7 @@ import '../view_models/chat_view_model.dart';
 import '../../../shared/buttons/custom_back_button.dart';
 import '../../../shared/loading/loading_indicator.dart';
 import '../../../shared/loading/custom_error_widget.dart';
+import '../../../shared/forms/input.dart';
 import '../widgets/chat_room_appbar.dart';
 import '../widgets/chat_message_bubble.dart';
 import '../widgets/chat_input_field.dart';
@@ -164,13 +165,10 @@ class ChatRoomView extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Edit Message'),
-        content: TextField(
+        content: Input(
+          hintText: 'Edit your message',
           controller: controller,
           maxLines: null,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Edit your message',
-          ),
         ),
         actions: [
           TextButton(
@@ -185,8 +183,6 @@ class ChatRoomView extends ConsumerWidget {
                   messageId: message.id,
                   newMessage: controller.text,
                 );
-                // ignore: use_build_context_synchronously
-                if (context.mounted) Navigator.pop(context);
               }
             },
             child: Text('Save'),

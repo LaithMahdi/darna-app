@@ -10,6 +10,9 @@ import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
 import '../view_models/colocation_view_model.dart';
 
+final _addMemberSubmittingProvider = StateProvider.autoDispose
+    .family<bool, String>((ref, colocationId) => false);
+
 class ColocationDetailAddMemberForm extends ConsumerStatefulWidget {
   const ColocationDetailAddMemberForm({super.key, required this.colocationId});
 
@@ -26,7 +29,6 @@ class _ColocationDetailAddMemberFormState
       GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
-  bool _isSubmitting = false;
 
   @override
   void dispose() {
@@ -37,11 +39,14 @@ class _ColocationDetailAddMemberFormState
   Future<void> _addMember() async {
     final isValid =
         _formAddMemberColocationDetailKey.currentState?.validate() ?? false;
-    if (!isValid || _isSubmitting) return;
+    final isSubmitting = ref.read(
+      _addMemberSubmittingProvider(widget.colocationId),
+    );
 
-    setState(() {
-      _isSubmitting = true;
-    });
+    if (!isValid || isSubmitting) return;
+
+    ref.read(_addMemberSubmittingProvider(widget.colocationId).notifier).state =
+        true;
 
     final error = await ref
         .read(colocationViewModelProvider.notifier)
@@ -52,9 +57,8 @@ class _ColocationDetailAddMemberFormState
 
     if (!mounted) return;
 
-    setState(() {
-      _isSubmitting = false;
-    });
+    ref.read(_addMemberSubmittingProvider(widget.colocationId).notifier).state =
+        false;
 
     if (error != null) {
       showToast(context, error, isError: true);
@@ -67,6 +71,10 @@ class _ColocationDetailAddMemberFormState
 
   @override
   Widget build(BuildContext context) {
+    final isSubmitting = ref.watch(
+      _addMemberSubmittingProvider(widget.colocationId),
+    );
+
     return Form(
       key: _formAddMemberColocationDetailKey,
       child: Column(
@@ -84,7 +92,7 @@ class _ColocationDetailAddMemberFormState
           VerticalSpacer(20),
           PrimaryButton(
             text: "Add Member",
-            isLoading: _isSubmitting,
+            isLoading: isSubmitting,
             onPressed: _addMember,
           ),
         ],

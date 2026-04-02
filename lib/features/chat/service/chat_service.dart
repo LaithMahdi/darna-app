@@ -104,9 +104,41 @@ class ChatService {
     List<String> participants,
   ) async {
     try {
+      final normalizedParticipants = {...participants}.toList();
+
       // Check if already exists
       final existing = await getColocationChatRoom(colocationId);
       if (existing != null) {
+        final mergedParticipants = {
+          ...existing.participants,
+          ...normalizedParticipants,
+        }.toList();
+
+        final shouldUpdateParticipants =
+            mergedParticipants.length != existing.participants.length;
+        final shouldUpdateName = existing.name != colocationName;
+
+        if (shouldUpdateParticipants || shouldUpdateName) {
+          final updates = <String, dynamic>{};
+          if (shouldUpdateParticipants) {
+            updates['participants'] = mergedParticipants;
+          }
+          if (shouldUpdateName) {
+            updates['name'] = colocationName;
+          }
+
+          await _firestore
+              .collection(Config.chatRoomsCollection)
+              .doc(existing.id)
+              .update(updates);
+
+          debugLog('Updated colocation chat room members: $colocationId');
+          return existing.copyWith(
+            participants: mergedParticipants,
+            name: colocationName,
+          );
+        }
+
         debugLog('Colocation chat room already exists: $colocationId');
         return existing;
       }
@@ -115,7 +147,7 @@ class ChatService {
       final newRoom = await createColocationChatRoom(
         colocationId,
         colocationName,
-        participants,
+        normalizedParticipants,
       );
       return newRoom;
     } catch (error) {
@@ -133,7 +165,11 @@ class ChatService {
       for (var colocation in colocations) {
         final colocationId = colocation.id;
         final colocationName = colocation.name;
-        final participants = colocation.memberIds as List<String>;
+        final participants = List<String>.from(colocation.memberIds ?? []);
+
+        if (!participants.contains(userId)) {
+          participants.add(userId);
+        }
 
         await ensureColocationChatRoom(
           colocationId,
@@ -155,6 +191,8 @@ class ChatService {
     List<String> participants,
   ) async {
     try {
+      final normalizedParticipants = {...participants}.toList();
+
       final newRoomRef = _firestore
           .collection(Config.chatRoomsCollection)
           .doc();
@@ -164,7 +202,7 @@ class ChatService {
         type: ChatRoomType.group,
         colocationId: colocationId,
         name: colocationName,
-        participants: participants,
+        participants: normalizedParticipants,
         lastMessage: 'Group chat created',
         lastMessageAt: DateTime.now(),
         unreadCount: 0,

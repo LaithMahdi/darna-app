@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/config.dart';
 import '../../../core/functions/show_toast.dart';
@@ -11,21 +12,22 @@ import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/label.dart';
 import '../../../shared/text/sub_label.dart';
 
-class PasswordView extends StatefulWidget {
+final _passwordSavingProvider = StateProvider.autoDispose<bool>((ref) => false);
+
+class PasswordView extends ConsumerStatefulWidget {
   const PasswordView({super.key});
 
   @override
-  State<PasswordView> createState() => _PasswordViewState();
+  ConsumerState<PasswordView> createState() => _PasswordViewState();
 }
 
-class _PasswordViewState extends State<PasswordView> {
+class _PasswordViewState extends ConsumerState<PasswordView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _currentPasswordController =
       TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  bool _isSaving = false;
 
   @override
   void dispose() {
@@ -37,7 +39,9 @@ class _PasswordViewState extends State<PasswordView> {
 
   Future<void> _updatePassword() async {
     final isValid = _formKey.currentState?.validate() ?? false;
-    if (!isValid || _isSaving) return;
+    final isSaving = ref.read(_passwordSavingProvider);
+
+    if (!isValid || isSaving) return;
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null || user.email == null) {
@@ -49,9 +53,7 @@ class _PasswordViewState extends State<PasswordView> {
       return;
     }
 
-    setState(() {
-      _isSaving = true;
-    });
+    ref.read(_passwordSavingProvider.notifier).state = true;
 
     try {
       final credential = EmailAuthProvider.credential(
@@ -75,9 +77,7 @@ class _PasswordViewState extends State<PasswordView> {
       showToast(context, 'Failed to update password.', isError: true);
     } finally {
       if (!mounted) return;
-      setState(() {
-        _isSaving = false;
-      });
+      ref.read(_passwordSavingProvider.notifier).state = false;
     }
   }
 
@@ -97,6 +97,8 @@ class _PasswordViewState extends State<PasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    final isSaving = ref.watch(_passwordSavingProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: Navigator.canPop(context) ? CustomBackButton() : null,
@@ -154,7 +156,7 @@ class _PasswordViewState extends State<PasswordView> {
                 VerticalSpacer(22),
                 PrimaryButton(
                   text: 'Update Password',
-                  isLoading: _isSaving,
+                  isLoading: isSaving,
                   onPressed: _updatePassword,
                 ),
               ],

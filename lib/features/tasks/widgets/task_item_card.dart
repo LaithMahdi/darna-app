@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/constants/app_color.dart';
 import '../../../core/constants/app_style.dart';
 import '../../../shared/icones/dialog_avatar.dart';
+import '../../../shared/spacer/spacer.dart';
 import '../models/task_model.dart';
 import 'task_status_button.dart';
 
@@ -140,7 +141,7 @@ class TaskItemCard extends StatelessWidget {
                             size: 14,
                             color: AppColor.grey9A,
                           ),
-                          SizedBox(width: 7),
+                          HorizontalSpacer(7),
                           Expanded(
                             child: Text(
                               task.date.isEmpty ? 'No due date' : task.date,
@@ -172,7 +173,7 @@ class TaskItemCard extends StatelessWidget {
                                       color: AppColor.primary,
                                     ),
                                   ),
-                                  SizedBox(width: 4),
+                                  HorizontalSpacer(4),
                                   Icon(
                                     LucideIcons.chevronRight,
                                     size: 13,

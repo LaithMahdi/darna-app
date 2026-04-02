@@ -74,7 +74,7 @@ class TaskCreateUsersDialog extends StatelessWidget {
                 shrinkWrap: true,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: availableUsers.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 8),
+                separatorBuilder: (_, __) => const VerticalSpacer(8),
                 itemBuilder: (context, index) {
                   final user = availableUsers[index];
                   final isChecked = tempSelection.contains(user.id);

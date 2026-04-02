@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/config.dart';
 import '../../../core/constants/app_style.dart';
@@ -16,21 +17,26 @@ import '../../../shared/text/label.dart';
 import '../../../shared/text/sub_label.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-class ManageAccountView extends StatefulWidget {
+final _manageAccountLoadingProvider = StateProvider.autoDispose<bool>(
+  (ref) => true,
+);
+final _manageAccountSavingProvider = StateProvider.autoDispose<bool>(
+  (ref) => false,
+);
+
+class ManageAccountView extends ConsumerStatefulWidget {
   const ManageAccountView({super.key});
 
   @override
-  State<ManageAccountView> createState() => _ManageAccountViewState();
+  ConsumerState<ManageAccountView> createState() => _ManageAccountViewState();
 }
 
-class _ManageAccountViewState extends State<ManageAccountView> {
+class _ManageAccountViewState extends ConsumerState<ManageAccountView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final ValueNotifier<String?> _selectedGender = ValueNotifier<String?>(null);
-  bool _isLoading = true;
-  bool _isSaving = false;
 
   @override
   void initState() {
@@ -51,9 +57,7 @@ class _ManageAccountViewState extends State<ManageAccountView> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-      });
+      ref.read(_manageAccountLoadingProvider.notifier).state = false;
       return;
     }
 
@@ -82,14 +86,14 @@ class _ManageAccountViewState extends State<ManageAccountView> {
     } catch (_) {}
 
     if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-    });
+    ref.read(_manageAccountLoadingProvider.notifier).state = false;
   }
 
   Future<void> _saveProfile() async {
     final isValid = _formKey.currentState?.validate() ?? false;
-    if (!isValid || _isSaving) return;
+    final isSaving = ref.read(_manageAccountSavingProvider);
+
+    if (!isValid || isSaving) return;
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -97,9 +101,7 @@ class _ManageAccountViewState extends State<ManageAccountView> {
       return;
     }
 
-    setState(() {
-      _isSaving = true;
-    });
+    ref.read(_manageAccountSavingProvider.notifier).state = true;
 
     try {
       final fullName = _fullNameController.text.trim();
@@ -130,20 +132,21 @@ class _ManageAccountViewState extends State<ManageAccountView> {
       showToast(context, 'Failed to update account.', isError: true);
     } finally {
       if (!mounted) return;
-      setState(() {
-        _isSaving = false;
-      });
+      ref.read(_manageAccountSavingProvider.notifier).state = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(_manageAccountLoadingProvider);
+    final isSaving = ref.watch(_manageAccountSavingProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: Navigator.canPop(context) ? CustomBackButton() : null,
         title: Text('Manage Account'),
       ),
-      body: _isLoading
+      body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
               padding: Config.defaultPadding,
@@ -215,7 +218,7 @@ class _ManageAccountViewState extends State<ManageAccountView> {
                       VerticalSpacer(22),
                       PrimaryButton(
                         text: 'Save Changes',
-                        isLoading: _isSaving,
+                        isLoading: isSaving,
                         onPressed: _saveProfile,
                       ),
                     ],

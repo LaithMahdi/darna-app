@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/config.dart';
 import '../../../shared/buttons/ghost_button.dart';
 import '../../../shared/buttons/media_source_button.dart';
+import '../../../shared/spacer/spacer.dart';
 import '../../../shared/text/bottom_sheet_title.dart';
 
 class CompletProfileModalBottomSheet extends StatelessWidget {
@@ -25,7 +26,7 @@ class CompletProfileModalBottomSheet extends StatelessWidget {
                   icon: LucideIcons.camera,
                   onTap: () {},
                 ),
-                SizedBox(height: 15),
+                VerticalSpacer(15),
                 MediaSourceButton(
                   title: "Choose from Gallery",
                   description: "Select a photo from your device",

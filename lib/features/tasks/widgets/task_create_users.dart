@@ -73,7 +73,7 @@ class TaskCreateUsers extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Members', style: AppStyle.styleSemiBold14),
-                    SizedBox(height: 2),
+                    VerticalSpacer(2),
                     Text(
                       '${_selectedUsers.length} selected',
                       style: AppStyle.styleRegular12.copyWith(
